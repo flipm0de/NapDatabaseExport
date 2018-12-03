@@ -29,11 +29,6 @@ namespace NapDatabaseExport
         {
             var currentProvider = (DatabaseProvider) cboDatabaseType.SelectedItem;
 
-            LoadDatabaseConnectionSettings (currentProvider);
-        }
-
-        private void LoadDatabaseConnectionSettings (DatabaseProvider currentProvider)
-        {
             lblDatabaseFile.Enabled = currentProvider.UsesDatabaseFile;
             txtDatabaseFile.Enabled = currentProvider.UsesDatabaseFile;
             btnDatabaseFile.Enabled = currentProvider.UsesDatabaseFile;
@@ -53,6 +48,19 @@ namespace NapDatabaseExport
             txtPassword.Enabled = currentProvider.UsesPassword;
 
             SetDatabaseEnabled (currentProvider.UsesDatabase);
+
+            if (currentProvider.UsesDatabaseFile)
+                txtDatabaseFile.Focus ();
+            else if (currentProvider.UsesServer)
+                txtServer.Focus ();
+            else if (currentProvider.UsesPort)
+                nudPort.Focus ();
+            else if (currentProvider.UsesUser)
+                txtUser.Focus ();
+            else if (currentProvider.UsesPassword)
+                txtPassword.Focus ();
+            else if (currentProvider.UsesDatabase)
+                txtDatabaseFile.Focus ();
         }
 
         private void btnDatabaseFile_Click (object sender, EventArgs e)

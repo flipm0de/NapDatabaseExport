@@ -71,6 +71,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="MSSQLServerProvider.cs" />
     <Compile Include="SQLiteProvider.cs" />
     <Compile Include="SemicolonSVExportProvider.cs" />
     <Compile Include="CommaSVExportProvider.cs" />

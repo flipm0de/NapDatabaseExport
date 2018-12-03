@@ -55,8 +55,6 @@ namespace NapDatabaseExport
 
         public abstract bool TryConnect ();
 
-        public abstract void Disconnect ();
-
         public abstract string [] GetDatabases ();
 
         public abstract string [] GetTables ();
@@ -65,7 +63,12 @@ namespace NapDatabaseExport
 
         public static DatabaseProvider [] GetAll ()
         {
-            return new DatabaseProvider [] { new MySQLServerProvider (), new SQLiteProvider () };
+            return new DatabaseProvider []
+                {
+                    new MySQLServerProvider (),
+                    new SQLiteProvider (),
+                    new MSSQLServerProvider ()
+                };
         }
     }
 }

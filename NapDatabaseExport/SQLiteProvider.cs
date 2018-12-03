@@ -31,7 +31,7 @@ namespace NapDatabaseExport
             return builder.ConnectionString;
         }
 
-        private object GetConnection ()
+        private SqliteConnection GetConnection ()
         {
             try {
                 var conn = new SqliteConnection (GenerateConnectionString ());
@@ -44,7 +44,7 @@ namespace NapDatabaseExport
 
         private SqliteCommand GetCommand (string commandText, IEnumerable<DbParam> parameters)
         {
-            var connection = (SqliteConnection) GetConnection ();
+            var connection = GetConnection ();
             if (connection == null)
                 return null;
 
@@ -65,10 +65,6 @@ namespace NapDatabaseExport
         public override bool TryConnect ()
         {
             return true;
-        }
-
-        public override void Disconnect ()
-        {
         }
 
         public override string [] GetDatabases ()
