@@ -22,4 +22,4 @@ This tool consists of a single screen which allows you to:
 
 C#, Windows Forms and .NET 4.0 (almost any software vendor can use this as it runs on Windows XP and should run on Linux, macOS with Mono)
 
-Connects to SQLite, MySQL and Microsoft SQL Server databases. More can be added in the future from contributors.
+Connects to SQLite, MySQL, Microsoft SQL Server and Microsoft Access databases. More can be added in the future from contributors.
