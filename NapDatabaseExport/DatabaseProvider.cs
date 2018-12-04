@@ -67,7 +67,8 @@ namespace NapDatabaseExport
                 {
                     new MySQLServerProvider (),
                     new SQLiteProvider (),
-                    new MSSQLServerProvider ()
+                    new MSSQLServerProvider (),
+                    new MSAccessProvider ()
                 };
         }
     }
