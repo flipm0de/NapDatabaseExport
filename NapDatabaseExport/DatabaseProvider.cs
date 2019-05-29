@@ -50,7 +50,11 @@ namespace NapDatabaseExport
         {
             get { return false; }
         }
-        public virtual bool UsesQuoteTableNames => false;
+
+        public virtual bool UsesQuoteTableNames
+        {
+            get { return false; }
+        }
 
         public string Database { get; set; }
 

@@ -19,25 +19,26 @@ namespace NapDatabaseExport
         public override bool UsesUser => true;
 
         public override bool UsesPassword => true;
+
         public override bool UsesQuoteTableNames => true;
 
         public override bool UsesDatabaseFile=>true;
+
         private FbTransaction _transaction;
         private FbConnection _connection;
+
         private string GenerateConnectionString ()
         {
-
             return 
                 $"User={User};Password={Password};Database={DatabaseFile};DataSource={Server};Port={Port};Dialect=3;Charset=NONE; Role=;Connection lifetime=15;";
-
         }
 
         private void Connect ()
         {
             try {
-                _connection = new FbConnection(GenerateConnectionString ());
+                _connection = new FbConnection (GenerateConnectionString ());
                 _connection.Open ();
-                _transaction = _connection.BeginTransaction();
+                _transaction = _connection.BeginTransaction ();
             } catch (SocketException ex) {
                 throw new DbConnectionLostException (ex);
             } catch (Exception ex) {
@@ -60,7 +61,7 @@ namespace NapDatabaseExport
             };
             if (parameters != null)
                 foreach (var p in parameters) // parameters not tested yet 
-                    command.Parameters.Add(p.ParameterName, p.Value);
+                    command.Parameters.Add (p.ParameterName, p.Value);
 
             return command;
         }
@@ -77,7 +78,7 @@ namespace NapDatabaseExport
 
         public override string [] GetDatabases ()
         {
-            throw new NotSupportedException();
+            throw new NotSupportedException ();
         }
 
         public override string [] GetTables ()
@@ -90,23 +91,22 @@ namespace NapDatabaseExport
             )
             {
                 while (dr.Read())
-                    tables.Add(dr.GetString(0));
+                    tables.Add (dr.GetString(0));
 
             }
 
             return tables.ToArray ();
         }
 
-        public override IDataReader ExecuteReader(string commandText, params DbParam[] parameters)
+        public override IDataReader ExecuteReader (string commandText, params DbParam[] parameters)
         {
-            var command = GetCommand(commandText, parameters);
-            IDataReader reader = command.ExecuteReader();
+            var command = GetCommand (commandText, parameters);
+            IDataReader reader = command.ExecuteReader ();
             if (reader == null)
-                throw new DbConnectionLostException("Could not get a valid reader from the database");
+                throw new DbConnectionLostException ("Could not get a valid reader from the database");
 
             // detach the SqlParameters from the command object, so they can be used again.
-            command.Parameters.Clear();
-
+            command.Parameters.Clear ();
 
             return reader;
         }
