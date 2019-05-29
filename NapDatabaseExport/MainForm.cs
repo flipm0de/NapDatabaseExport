@@ -215,22 +215,19 @@ namespace NapDatabaseExport
         private void btnExport_Click (object sender, EventArgs e)
         {
             Cursor.Current = Cursors.WaitCursor;
-            try
-            {
+            try {
                 var exportFolder = txtExportFolder.Text;
 
                 if (!Directory.Exists (exportFolder))
                 {
-                    MessageBox.Show ("Папка \"" + exportFolder + "\" не може да бъде открита.", "Внимание!",
-                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show ("Папка \"" + exportFolder + "\" не може да бъде открита.", "Внимание!", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
 
                 var exportProvider = (ExportProvider) cboExportType.SelectedItem;
                 var databaseProvider = (DatabaseProvider) cboDatabaseType.SelectedItem;
 
-                try
-                {
+                try {
                     foreach (string listTable in chlTables.CheckedItems)
                     {
                         var table = listTable.Trim ();
@@ -266,17 +263,11 @@ namespace NapDatabaseExport
                         exportProvider.FinishExport ();
                     }
 
-                    MessageBox.Show ("Експорта на данни приключи успешно", "Успех", MessageBoxButtons.OK,
-                        MessageBoxIcon.Information);
+                    MessageBox.Show ("Експорта на данни приключи успешно", "Успех", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                } catch (Exception ex) {
+                    MessageBox.Show ("Грешка при експорт на данни: " + ex, "Внимание!", MessageBoxButtons.OK,MessageBoxIcon.Warning);
                 }
-                catch (Exception ex)
-                {
-                    MessageBox.Show ("Грешка при експорт на данни: " + ex, "Внимание!", MessageBoxButtons.OK,
-                        MessageBoxIcon.Warning);
-                }
-            }
-            finally
-            {
+            } finally {
                 Cursor.Current = Cursors.Default;
             }
         }
