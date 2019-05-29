@@ -29,8 +29,7 @@ namespace NapDatabaseExport
         private string GetCellValue (string data)
         {
             var useQuotes = false;
-
-            if (data.Contains ("\"")) {
+            if (data.Contains ("\"") || data.Contains("\n") || data.Contains("\r")) {
                 data = data.Replace ("\"", "\"\"");
                 useQuotes = true;
             }

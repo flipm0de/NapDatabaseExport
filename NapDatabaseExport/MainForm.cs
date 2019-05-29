@@ -214,45 +214,70 @@ namespace NapDatabaseExport
 
         private void btnExport_Click (object sender, EventArgs e)
         {
-            var exportFolder = txtExportFolder.Text;
+            Cursor.Current = Cursors.WaitCursor;
+            try
+            {
+                var exportFolder = txtExportFolder.Text;
 
-            if (!Directory.Exists (exportFolder)) {
-                MessageBox.Show ("Папка \"" + exportFolder + "\" не може да бъде открита.", "Внимание!", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
-
-            var exportProvider = (ExportProvider) cboExportType.SelectedItem;
-            var databaseProvider = (DatabaseProvider) cboDatabaseType.SelectedItem;
-
-            try {
-                foreach (string table in chlTables.CheckedItems) {
-                    exportProvider.StartExport (Path.Combine (exportFolder, table + exportProvider.DefaultFileExtension));
-
-                    using (var reader = databaseProvider.ExecuteReader ("SELECT * FROM " + table)) {
-                        if (!reader.Read ())
-                            continue;
-
-                        var columns = new string [reader.FieldCount];
-                        for (int j = 0; j < reader.FieldCount; j++)
-                            columns [j] = reader.GetName (j);
-
-                        exportProvider.WriteColumnNames (columns);
-
-                        var row = new object [reader.FieldCount];
-                        do {
-                            for (int j = 0; j < reader.FieldCount; j++)
-                                row [j] = reader.GetValue (j);
-
-                            exportProvider.WriteRow (row);
-                        } while (reader.Read ());
-                    }
-
-                    exportProvider.FinishExport ();
+                if (!Directory.Exists(exportFolder))
+                {
+                    MessageBox.Show("Папка \"" + exportFolder + "\" не може да бъде открита.", "Внимание!",
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
                 }
 
-                MessageBox.Show ("Експорта на данни приключи успешно", "Успех", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            } catch (Exception ex) {
-                MessageBox.Show ("Грешка при експорт на данни: " + ex, "Внимание!", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                var exportProvider = (ExportProvider) cboExportType.SelectedItem;
+                var databaseProvider = (DatabaseProvider) cboDatabaseType.SelectedItem;
+
+                try
+                {
+                    foreach (string listTable in chlTables.CheckedItems)
+                    {
+                        var table = listTable.Trim();
+                        exportProvider.StartExport(Path.Combine(exportFolder,
+                            table + exportProvider.DefaultFileExtension));
+                        var sql = databaseProvider.UsesQuoteTableNames
+                            ? "SELECT * FROM \"" + table + "\""
+                            : "SELECT * FROM " + table;
+                        using (var reader = databaseProvider.ExecuteReader(sql))
+                        {
+                            if (!reader.Read())
+                            {
+                                exportProvider.FinishExport();
+                                continue;
+                            }
+
+                            var columns = new string [reader.FieldCount];
+                            for (int j = 0; j < reader.FieldCount; j++)
+                                columns[j] = reader.GetName(j);
+
+                            exportProvider.WriteColumnNames(columns);
+
+                            var row = new object [reader.FieldCount];
+                            do
+                            {
+                                for (int j = 0; j < reader.FieldCount; j++)
+                                    row[j] = reader.GetValue(j);
+
+                                exportProvider.WriteRow(row);
+                            } while (reader.Read());
+                        }
+
+                        exportProvider.FinishExport();
+                    }
+
+                    MessageBox.Show("Експорта на данни приключи успешно", "Успех", MessageBoxButtons.OK,
+                        MessageBoxIcon.Information);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Грешка при експорт на данни: " + ex, "Внимание!", MessageBoxButtons.OK,
+                        MessageBoxIcon.Warning);
+                }
+            }
+            finally
+            {
+                Cursor.Current = Cursors.Default;
             }
         }
 

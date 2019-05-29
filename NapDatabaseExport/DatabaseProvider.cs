@@ -50,6 +50,7 @@ namespace NapDatabaseExport
         {
             get { return false; }
         }
+        public virtual bool UsesQuoteTableNames => false;
 
         public string Database { get; set; }
 
@@ -69,7 +70,8 @@ namespace NapDatabaseExport
                     new SQLiteProvider (),
                     new MSSQLServerProvider (),
                     new MSAccessProvider (),
-                    new ODBCProvider ()
+                    new ODBCProvider (),
+                    new FirebirdServerProvider()
                 };
         }
     }
