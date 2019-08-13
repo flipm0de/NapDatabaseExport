@@ -37,9 +37,19 @@ namespace NapDatabaseExport
             get { return false; }
         }
 
+        public virtual bool RequiresUser
+        {
+            get { return UsesUser; }
+        }
+
         public string User { get; set; }
 
         public virtual bool UsesPassword
+        {
+            get { return false; }
+        }
+
+        public virtual bool RequiresPassword
         {
             get { return false; }
         }

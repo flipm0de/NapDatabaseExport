@@ -104,7 +104,7 @@ namespace NapDatabaseExport
                 }
             }
 
-            if (currentProvider.UsesUser) {
+            if (currentProvider.RequiresUser) {
                 if (string.IsNullOrWhiteSpace (txtUser.Text)) {
                     MessageBox.Show ("Моля, въведете потребител.", "Внимание!", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     txtUser.Focus ();
@@ -112,7 +112,7 @@ namespace NapDatabaseExport
                 }
             }
 
-            if (currentProvider.UsesPassword) {
+            if (currentProvider.RequiresPassword) {
                 if (string.IsNullOrWhiteSpace (txtPassword.Text)) {
                     MessageBox.Show ("Моля, въведете парола.", "Внимание!", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     txtPassword.Focus ();
