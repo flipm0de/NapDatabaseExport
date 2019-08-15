@@ -13,7 +13,7 @@ namespace NapDatabaseExport
 
         public override void StartExport (string filePath)
         {
-            writer = new StreamWriter(filePath, false, new UTF8Encoding(true));
+            writer = new StreamWriter (filePath, false, new UTF8Encoding (true));
         }
 
         public override void WriteColumnNames (string [] columns)
