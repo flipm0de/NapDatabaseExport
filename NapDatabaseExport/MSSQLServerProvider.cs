@@ -23,9 +23,19 @@ namespace NapDatabaseExport
             get { return true; }
         }
 
+        public override bool RequiresUser
+        {
+            get { return false; }
+        }
+
         public override bool UsesPassword
         {
             get { return true; }
+        }
+
+        public override bool RequiresPassword
+        {
+            get { return false; }
         }
 
         public override bool UsesDatabase
@@ -39,11 +49,16 @@ namespace NapDatabaseExport
             if (!string.IsNullOrEmpty (Server))
                 connectionString.DataSource = Server;
 
-            if (!string.IsNullOrEmpty (User))
+            if (!string.IsNullOrEmpty (User)) {
                 connectionString.UserID = User;
 
-            if (!string.IsNullOrEmpty (Password))
-                connectionString.Password = Password;
+                if (!string.IsNullOrEmpty (Password))
+                    connectionString.Password = Password;
+            }
+            else {
+                connectionString.IntegratedSecurity = true;
+            }
+
 
             if (!string.IsNullOrEmpty (Database))
                 connectionString.InitialCatalog = Database;
@@ -95,7 +110,7 @@ namespace NapDatabaseExport
 
         public override bool TryConnect ()
         {
-            if (string.IsNullOrWhiteSpace (Server) || string.IsNullOrWhiteSpace (User))
+            if (string.IsNullOrWhiteSpace (Server))
                 throw new Exception ("The connection parameters are not properly set.");
 
             SqlConnection conn = null;
@@ -112,7 +127,7 @@ namespace NapDatabaseExport
         {
             var tables = new List<string> ();
 
-            using (var dr = ExecuteReader ("SELECT name FROM sys.databases"))
+            using (var dr = ExecuteReader ("SELECT name FROM sys.databases WHERE database_id > 4 ORDER BY name"))
                 while (dr.Read ())
                     tables.Add (dr.GetString (0));
 
@@ -123,7 +138,7 @@ namespace NapDatabaseExport
         {
             var tables = new List<string> ();
 
-            using (var dr = ExecuteReader (string.Format ("select name from [{0}].[sys].sysobjects where xtype = 'U'", Database)))
+            using (var dr = ExecuteReader (string.Format ("SELECT name FROM [{0}].dbo.sysobjects WHERE xtype = 'U' ORDER BY name", Database)))
                 while (dr.Read ())
                     tables.Add (dr.GetString (0));
 

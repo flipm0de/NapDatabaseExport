@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Text;
 
 namespace NapDatabaseExport
 {
@@ -12,7 +13,7 @@ namespace NapDatabaseExport
 
         public override void StartExport (string filePath)
         {
-            writer = File.CreateText (filePath);
+            writer = new StreamWriter (filePath, false, new UTF8Encoding (true));
         }
 
         public override void WriteColumnNames (string [] columns)
