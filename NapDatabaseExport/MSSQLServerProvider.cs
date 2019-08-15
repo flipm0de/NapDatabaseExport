@@ -49,15 +49,13 @@ namespace NapDatabaseExport
             if (!string.IsNullOrEmpty (Server))
                 connectionString.DataSource = Server;
 
-            if (!string.IsNullOrEmpty (User))
-            {
+            if (!string.IsNullOrEmpty (User)) {
                 connectionString.UserID = User;
 
                 if (!string.IsNullOrEmpty (Password))
                     connectionString.Password = Password;
             }
-            else
-            {
+            else {
                 connectionString.IntegratedSecurity = true;
             }
 
