@@ -24,7 +24,9 @@ namespace NapDatabaseExport
         public override void WriteRow (object [] values)
         {
             writer.WriteLine (string.Join (Delimiter,
-                values.Select (v => v != null && v != DBNull.Value ? GetCellValue (v.ToString ()) : string.Empty)));
+                values.Select (v => v != null && v != DBNull.Value
+                                ? GetCellValue (v is byte[] ? "0x" + BitConverter.ToString((byte[]) v).Replace("-", "") : v.ToString ())
+                                : string.Empty)));
         }
 
         private string GetCellValue (string data)
