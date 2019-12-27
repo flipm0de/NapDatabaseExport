@@ -76,7 +76,7 @@ namespace NapDatabaseExport
         {
             var tables = new List<string> ();
 
-            using (var dr = ExecuteReader ("SELECT name FROM sqlite_master WHERE type='table'"))
+            using (var dr = ExecuteReader ("SELECT name FROM sqlite_master WHERE type='table' ORDER BY name"))
                 while (dr.Read ())
                     tables.Add (dr.GetString (0));
 
