@@ -18,8 +18,8 @@
         {
             return new ExportProvider []
                 {
-                    new SemicolonSVExportProvider (),
-                    new CommaSVExportProvider ()
+                    new CommaSVExportProvider (),
+                    new SemicolonSVExportProvider ()
                 };
         }
     }
