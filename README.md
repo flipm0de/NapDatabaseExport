@@ -20,6 +20,6 @@ This tool consists of a single screen which allows you to:
 
 ## Technologies used
 
-C#, Windows Forms and .NET 4.0 (almost any software vendor can use this as it runs on Windows XP and should run on Linux, macOS with Mono)
+C#, Windows Forms and .NET 4.5.2 (almost any software vendor can use this as it runs on Windows Vista SP2 and should run on Linux, macOS with Mono)
 
-Connects to SQLite, MySQL, Microsoft SQL Server and Microsoft Access databases. More can be added in the future from contributors.
+Connects to SQLite, MySQL, Microsoft SQL Server, Microsoft Access, Firebird Server and ODBC data sources. More can be added in the future from contributors.
