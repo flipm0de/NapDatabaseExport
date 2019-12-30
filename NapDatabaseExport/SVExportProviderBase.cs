@@ -25,8 +25,8 @@ namespace NapDatabaseExport
         {
             writer.WriteLine (string.Join (Delimiter,
                 values.Select (v => v != null && v != DBNull.Value
-                                ? GetCellValue (v is byte[] ? "0x" + BitConverter.ToString((byte[]) v).Replace("-", "") : v.ToString ())
-                                : string.Empty)));
+                    ? GetCellValue (v is byte [] ? "0x" + BitConverter.ToString ((byte []) v).Replace ("-", "") : v.ToString ())
+                    : string.Empty)));
         }
 
         private string GetCellValue (string data)

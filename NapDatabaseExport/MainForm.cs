@@ -19,7 +19,7 @@ namespace NapDatabaseExport
             cboExportType.DisplayMember = nameof (ExportProvider.ExportType);
             cboExportType.DataSource = dataExporters;
 
-            txtExportFolder.Text = Directory.GetCurrentDirectory();
+            txtExportFolder.Text = Directory.GetCurrentDirectory ();
 
             SetDatabaseEnabled (false);
             SetTablesEnabled (false);
@@ -230,8 +230,7 @@ namespace NapDatabaseExport
 
                 string table = string.Empty;
                 int tableRow = 0;
-                try
-                {
+                try {
                     foreach (string listTable in chlTables.CheckedItems)
                     {
                         table = listTable.Trim ();
@@ -250,7 +249,7 @@ namespace NapDatabaseExport
                                 continue;
                             }
 
-                            var columns = new string[reader.FieldCount];
+                            var columns = new string [reader.FieldCount];
                             for (int j = 0; j < reader.FieldCount; j++)
                                 columns[j] = reader.GetName (j);
 
@@ -261,7 +260,7 @@ namespace NapDatabaseExport
                             {
                                 for (int j = 0; j < reader.FieldCount; j++) {
                                     try {
-                                        row[j] = reader.GetValue(j);
+                                        row[j] = reader.GetValue (j);
                                     }
                                     catch (Exception) {
                                         Debug.WriteLine("Грешка при експорт на " + table + " на ред " + tableRow + " колона " + columns[j]);
