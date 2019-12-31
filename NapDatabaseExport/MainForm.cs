@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Windows.Forms;
 
@@ -18,7 +19,7 @@ namespace NapDatabaseExport
             cboExportType.DisplayMember = nameof (ExportProvider.ExportType);
             cboExportType.DataSource = dataExporters;
 
-            txtExportFolder.Text = Environment.GetFolderPath (Environment.SpecialFolder.Desktop);
+            txtExportFolder.Text = Directory.GetCurrentDirectory ();
 
             SetDatabaseEnabled (false);
             SetTablesEnabled (false);
@@ -227,10 +228,13 @@ namespace NapDatabaseExport
                 var exportProvider = (ExportProvider) cboExportType.SelectedItem;
                 var databaseProvider = (DatabaseProvider) cboDatabaseType.SelectedItem;
 
+                string table = string.Empty;
+                int tableRow = 0;
                 try {
                     foreach (string listTable in chlTables.CheckedItems)
                     {
-                        var table = listTable.Trim ();
+                        table = listTable.Trim ();
+                        tableRow = 0;
                         exportProvider.StartExport (Path.Combine(exportFolder,
                             table + exportProvider.DefaultFileExtension));
                         var commandText = databaseProvider.UsesQuoteTableNames
@@ -238,6 +242,7 @@ namespace NapDatabaseExport
                             : "SELECT * FROM " + table;
                         using (var reader = databaseProvider.ExecuteReader (commandText))
                         {
+                            tableRow++;
                             if (!reader.Read ())
                             {
                                 exportProvider.FinishExport ();
@@ -253,9 +258,14 @@ namespace NapDatabaseExport
                             var row = new object [reader.FieldCount];
                             do
                             {
-                                for (int j = 0; j < reader.FieldCount; j++)
-                                    row[j] = reader.GetValue (j);
-
+                                for (int j = 0; j < reader.FieldCount; j++) {
+                                    try {
+                                        row[j] = reader.GetValue (j);
+                                    }
+                                    catch (Exception) {
+                                        Debug.WriteLine("Грешка при експорт на " + table + " на ред " + tableRow + " колона " + columns[j]);
+                                    }
+                                }
                                 exportProvider.WriteRow (row);
                             } while (reader.Read ());
                         }
@@ -263,9 +273,9 @@ namespace NapDatabaseExport
                         exportProvider.FinishExport ();
                     }
 
-                    MessageBox.Show ("Експорта на данни приключи успешно", "Успех", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show ("Експортът на данни приключи успешно", "Успех", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 } catch (Exception ex) {
-                    MessageBox.Show ("Грешка при експорт на данни: " + ex, "Внимание!", MessageBoxButtons.OK,MessageBoxIcon.Warning);
+                    MessageBox.Show ("Грешка при експорт на " + table + " на ред " + tableRow + ": " + ex, "Внимание!", MessageBoxButtons.OK,MessageBoxIcon.Warning);
                 }
             } finally {
                 Cursor.Current = Cursors.Default;
