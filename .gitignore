@@ -2,3 +2,4 @@
 NapDatabaseExport/obj/
 NapDatabaseExport/bin/
 !*.dll
+packages/
