@@ -1,4 +1,4 @@
-﻿namespace NapDatabaseExport
+﻿namespace NraDatabaseExport
 {
     partial class MainForm
     {
@@ -349,7 +349,6 @@
 
         #endregion
 
-        private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label lblServer;
         private System.Windows.Forms.TextBox txtServer;
         private System.Windows.Forms.TextBox txtUser;

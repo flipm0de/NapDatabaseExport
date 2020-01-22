@@ -1,5 +1,5 @@
 .vs/
-NapDatabaseExport/obj/
-NapDatabaseExport/bin/
-!*.dll
-packages/
+.vscode/
+src/**/obj/
+src/**/bin/
+src/**/*.csproj.user

@@ -3,30 +3,31 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.28803.452
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NapDatabaseExport", "NapDatabaseExport\NapDatabaseExport.csproj", "{FDB29672-1AC5-4B2B-B0C9-59B0324EB2FC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NraDatabaseExport", "src\NraDatabaseExport\NraDatabaseExport.csproj", "{FDB29672-1AC5-4B2B-B0C9-59B0324EB2FC}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "References", "References", "{6CD713F9-76BF-4964-B286-390A421F80BF}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{FA92375B-8775-4B49-8248-E9A3DC51862F}"
 	ProjectSection(SolutionItems) = preProject
-		References\Mono.Data.Sqlite.dll = References\Mono.Data.Sqlite.dll
-		References\MySql.Data.dll = References\MySql.Data.dll
+		.gitattributes = .gitattributes
+		.gitignore = .gitignore
+		Directory.Build.props = Directory.Build.props
+		Directory.Build.targets = Directory.Build.targets
+		README.bg.md = README.bg.md
+		gitversion.yml = gitversion.yml
+		global.json = global.json
+		LICENSE.md = LICENSE.md
+		README.md = README.md
 	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
-		Debug|x86 = Debug|x86
 		Release|Any CPU = Release|Any CPU
-		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{FDB29672-1AC5-4B2B-B0C9-59B0324EB2FC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{FDB29672-1AC5-4B2B-B0C9-59B0324EB2FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FDB29672-1AC5-4B2B-B0C9-59B0324EB2FC}.Debug|x86.ActiveCfg = Debug|x86
-		{FDB29672-1AC5-4B2B-B0C9-59B0324EB2FC}.Debug|x86.Build.0 = Debug|x86
 		{FDB29672-1AC5-4B2B-B0C9-59B0324EB2FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FDB29672-1AC5-4B2B-B0C9-59B0324EB2FC}.Release|Any CPU.Build.0 = Release|Any CPU
-		{FDB29672-1AC5-4B2B-B0C9-59B0324EB2FC}.Release|x86.ActiveCfg = Release|x86
-		{FDB29672-1AC5-4B2B-B0C9-59B0324EB2FC}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

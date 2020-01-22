@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+
+	<PropertyGroup>
+		<OutputType>WinExe</OutputType>
+		<TargetFramework>netcoreapp3.0</TargetFramework>
+		<UseWindowsForms>true</UseWindowsForms>
+		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+		<AssemblyName>NraDatabaseExport</AssemblyName>
+		<RootNamespace>NraDatabaseExport</RootNamespace>
+
+		<DefineConstants>$(DefineConstants);_SUPPORT_FIREBIRD;_SUPPORT_MSACCESS;_SUPPORT_MYSQL;_SUPPORT_ODBC;_SUPPORT_SQLITE;_SUPPORT_SQLSERVER</DefineConstants>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Condition="$(DefineConstants.Contains(';SUPPORT_FIREBIRD'))" Include="FirebirdSql.Data.FirebirdClient" version="7.1.1" />
+		<PackageReference Condition="$(DefineConstants.Contains(';SUPPORT_MYSQL'))" Include="MySql.Data" version="8.0.19" />
+		<PackageReference Condition="$(DefineConstants.Contains(';SUPPORT_ODBC')) or $(DefineConstants.Contains(';SUPPORT_MSACCESS'))" Include="System.Data.Odbc" Version="4.7.0" />
+		<PackageReference Condition="$(DefineConstants.Contains(';SUPPORT_SQLITE'))" Include="Microsoft.Data.Sqlite" Version="3.1.1" />
+		<PackageReference Condition="$(DefineConstants.Contains(';SUPPORT_SQLSERVER'))" Include="Microsoft.Data.SqlClient" Version="1.1.0" />
+	</ItemGroup>
+
+</Project>
