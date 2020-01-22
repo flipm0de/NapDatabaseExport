@@ -3,33 +3,33 @@ using System.Data;
 using System.Diagnostics;
 using System.IO;
 using System.Windows.Forms;
-using NraDatabaseExport.DatabaseProviders;
+using NraDatabaseExport.DbProviders;
 using NraDatabaseExport.ExportProviders;
 
 namespace NraDatabaseExport
 {
 	public partial class MainForm : Form
 	{
-		private static readonly DatabaseProviderBase[] _dbProviders
-			= new DatabaseProviderBase[]
+		private static readonly IDbProvider[] _dbProviders
+			= new IDbProvider[]
 			{
 #if SUPPORT_MYSQL
-				new MySqlDatabaseProvider(),
+				new MySqlDbProvider(),
 #endif
 #if SUPPORT_SQLITE
-				new SqliteDatabaseProvider(),
+				new SqliteDbProvider(),
 #endif
 #if SUPPORT_SQLSERVER
-				new SqlServerDatabaseProvider(),
+				new SqlServerDbProvider(),
 #endif
 #if SUPPORT_MSACCESS
-				new MSAccessDatabaseProvider(),
+				new MSAccessDbProvider(),
 #endif
 #if SUPPORT_ODBC
-				new OdbcDatabaseProvider(),
+				new OdbcDbProvider(),
 #endif
 #if SUPPORT_FIREBIRD
-				new FirebirdDatabaseProvider(),
+				new FirebirdDbProvider(),
 #endif
 			};
 
@@ -46,8 +46,8 @@ namespace NraDatabaseExport
 		{
 			InitializeComponent();
 
-			DatabaseProviderBase[] databaseProviders = _dbProviders;
-			cboDatabaseType.DisplayMember = nameof(DatabaseProviderBase.DatabaseTypeName);
+			DbProviderBase[] databaseProviders = _dbProviders;
+			cboDatabaseType.DisplayMember = nameof(DbProviderBase.DatabaseTypeName);
 			cboDatabaseType.DataSource = databaseProviders;
 
 			ExportProviderBase[] dataExporters = _exportProviders;
@@ -63,7 +63,7 @@ namespace NraDatabaseExport
 
 		private void cboDatabaseType_SelectedIndexChanged(object sender, EventArgs e)
 		{
-			var currentProvider = (DatabaseProviderBase)cboDatabaseType.SelectedItem;
+			var currentProvider = (DbProviderBase)cboDatabaseType.SelectedItem;
 
 			lblDatabaseFile.Enabled = currentProvider.UsesDatabaseFile;
 			txtDatabaseFile.Enabled = currentProvider.UsesDatabaseFile;
@@ -79,13 +79,13 @@ namespace NraDatabaseExport
 				nudPort.Value = currentProvider.DefaultPort;
 			}
 
-			lblUser.Enabled = currentProvider.UsesUser;
-			txtUser.Enabled = currentProvider.UsesUser;
+			lblUser.Enabled = currentProvider.UsesUserName;
+			txtUser.Enabled = currentProvider.UsesUserName;
 
 			lblPassword.Enabled = currentProvider.UsesPassword;
 			txtPassword.Enabled = currentProvider.UsesPassword;
 
-			SetDatabaseEnabled(currentProvider.UsesDatabase);
+			SetDatabaseEnabled(currentProvider.UsesDatabaseName);
 
 			if (currentProvider.UsesDatabaseFile)
 			{
@@ -99,7 +99,7 @@ namespace NraDatabaseExport
 			{
 				nudPort.Focus();
 			}
-			else if (currentProvider.UsesUser)
+			else if (currentProvider.UsesUserName)
 			{
 				txtUser.Focus();
 			}
@@ -107,7 +107,7 @@ namespace NraDatabaseExport
 			{
 				txtPassword.Focus();
 			}
-			else if (currentProvider.UsesDatabase)
+			else if (currentProvider.UsesDatabaseName)
 			{
 				txtDatabaseFile.Focus();
 			}
@@ -130,7 +130,7 @@ namespace NraDatabaseExport
 			SetTablesEnabled(false);
 			SetExportEnabled(false);
 
-			var currentProvider = (DatabaseProviderBase)cboDatabaseType.SelectedItem;
+			var currentProvider = (DbProviderBase)cboDatabaseType.SelectedItem;
 
 			if (currentProvider.UsesDatabaseFile)
 			{
@@ -180,7 +180,7 @@ namespace NraDatabaseExport
 				}
 			}
 
-			if (currentProvider.RequiresUser)
+			if (currentProvider.RequiresUserName)
 			{
 				if (string.IsNullOrWhiteSpace(txtUser.Text))
 				{
@@ -212,28 +212,20 @@ namespace NraDatabaseExport
 				}
 			}
 
-			currentProvider.DatabaseFile = txtDatabaseFile.Text;
-			currentProvider.Server = txtServer.Text;
-			currentProvider.Port = (uint)nudPort.Value;
-			currentProvider.User = txtUser.Text;
+			currentProvider.DatabaseFileName = txtDatabaseFile.Text;
+			currentProvider.ServerName = txtServer.Text;
+			currentProvider.Port = (int)nudPort.Value;
+			currentProvider.UserName = txtUser.Text;
 			currentProvider.Password = txtPassword.Text;
 
 			try
 			{
-				if (!currentProvider.TryConnect())
-				{
-					MessageBox.Show(
-						"Грешка при свързване със сървъра.",
-						"Внимание!",
-						MessageBoxButtons.OK,
-						MessageBoxIcon.Warning);
+				currentProvider.CreateConnection();
 
-					return;
-				}
-
-				if (currentProvider.UsesDatabase)
+				if (currentProvider.UsesDatabaseName)
 				{
-					cboDatabase.DataSource = currentProvider.GetDatabases();
+					cboDatabase.DataSource = currentProvider.GetDatabaseNames();
+
 					SetDatabaseEnabled(true);
 				}
 				else
@@ -256,20 +248,20 @@ namespace NraDatabaseExport
 			SetTablesEnabled(false);
 			SetExportEnabled(false);
 
-			var currentProvider = (DatabaseProviderBase)cboDatabaseType.SelectedItem;
+			var currentProvider = (DbProviderBase)cboDatabaseType.SelectedItem;
 
-			currentProvider.Database = (string)cboDatabase.SelectedValue;
+			currentProvider.DatabaseName = (string)cboDatabase.SelectedValue;
 
 			LoadTables();
 		}
 
 		private void LoadTables()
 		{
-			var currentProvider = (DatabaseProviderBase)cboDatabaseType.SelectedItem;
+			var currentProvider = (DbProviderBase)cboDatabaseType.SelectedItem;
 
 			try
 			{
-				chlTables.DataSource = currentProvider.GetTables();
+				chlTables.DataSource = currentProvider.GetTableNames();
 				SetTablesEnabled(true);
 			}
 			catch (Exception ex)
@@ -370,23 +362,24 @@ namespace NraDatabaseExport
 				}
 
 				var exportProvider = (ExportProviderBase)cboExportType.SelectedItem;
-				var databaseProvider = (DatabaseProviderBase)cboDatabaseType.SelectedItem;
+				var databaseProvider = (DbProviderBase)cboDatabaseType.SelectedItem;
 
-				string table = string.Empty;
+				string tableName = string.Empty;
 				int tableRow = 0;
 
 				try
 				{
-					foreach (string listTable in chlTables.CheckedItems)
+					foreach (string tableNames in chlTables.CheckedItems)
 					{
-						table = listTable.Trim();
+						tableName = tableNames.Trim();
 						tableRow = 0;
-						exportProvider.StartExport(Path.Combine(exportFolder,
-							table + exportProvider.DefaultFileExtension));
-						string commandText = databaseProvider.UsesQuoteTableNames
-							? $"SELECT * FROM \"{table}\""
-							: $"SELECT * FROM {table}";
-						using (IDataReader reader = databaseProvider.ExecuteReader(commandText))
+
+						string fileName = Path.Combine(exportFolder,
+							tableName + exportProvider.DefaultFileExtension);
+
+						exportProvider.StartExport(fileName);
+
+						using (IDataReader reader = databaseProvider.ExecuteTableReader(tableName))
 						{
 							tableRow++;
 
@@ -417,7 +410,7 @@ namespace NraDatabaseExport
 									}
 									catch (Exception ex)
 									{
-										Debug.WriteLine($"Грешка при експорт на таблица {table}, ред {tableRow}, колона {columns[j]}: {ex}");
+										Debug.WriteLine($"Грешка при експорт на таблица {tableName}, ред {tableRow}, колона {columns[j]}: {ex}");
 									}
 								}
 
@@ -437,7 +430,7 @@ namespace NraDatabaseExport
 				catch (Exception ex)
 				{
 					MessageBox.Show(
-						$"Грешка при експорт на таблица {table}, ред {tableRow}: {ex}",
+						$"Грешка при експорт на таблица {tableName}, ред {tableRow}: {ex}",
 						"Внимание!",
 						MessageBoxButtons.OK,
 						MessageBoxIcon.Warning);

@@ -8,7 +8,7 @@
 		<AssemblyName>NraDatabaseExport</AssemblyName>
 		<RootNamespace>NraDatabaseExport</RootNamespace>
 
-		<DefineConstants>$(DefineConstants);_SUPPORT_FIREBIRD;_SUPPORT_MSACCESS;_SUPPORT_MYSQL;_SUPPORT_ODBC;_SUPPORT_SQLITE;_SUPPORT_SQLSERVER</DefineConstants>
+		<DefineConstants>$(DefineConstants);SUPPORT_FIREBIRD;SUPPORT_MSACCESS;SUPPORT_MYSQL;SUPPORT_ODBC;SUPPORT_SQLITE;SUPPORT_SQLSERVER</DefineConstants>
 	</PropertyGroup>
 
 	<ItemGroup>
