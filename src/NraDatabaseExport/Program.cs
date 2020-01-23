@@ -3,10 +3,13 @@ using System.Windows.Forms;
 
 namespace NraDatabaseExport
 {
+	/// <summary>
+	/// Represents the entry class for the application.
+	/// </summary>
 	internal static class Program
 	{
 		/// <summary>
-		/// The main entry point for the application.
+		/// This is the main entry point for the application.
 		/// </summary>
 		[STAThread]
 		private static void Main()

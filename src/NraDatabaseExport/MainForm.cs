@@ -8,6 +8,9 @@ using NraDatabaseExport.ExportProviders;
 
 namespace NraDatabaseExport
 {
+	/// <summary>
+	/// Represents the main form of the application.
+	/// </summary>
 	public partial class MainForm : Form
 	{
 		private static readonly IDbProvider[] _dbProviders
@@ -42,11 +45,15 @@ namespace NraDatabaseExport
 
 		private bool _settingCheckBoxes;
 
+		/// <summary>
+		/// Initializes a new instance of the <see cref="MainForm"/> class.
+		/// </summary>
 		public MainForm()
 		{
 			InitializeComponent();
 		}
 
+		/// <inheritdoc/>
 		protected override void OnLoad(EventArgs e)
 		{
 			base.OnLoad(e);
@@ -260,25 +267,6 @@ namespace NraDatabaseExport
 			LoadTables();
 		}
 
-		private void LoadTables()
-		{
-			var currentProvider = (DbProviderBase)cboDatabaseType.SelectedItem;
-
-			try
-			{
-				chlTables.DataSource = currentProvider.GetTableNames();
-				SetTablesEnabled(true);
-			}
-			catch (Exception ex)
-			{
-				MessageBox.Show(
-					$"Грешка при свързване със сървъра: {ex}",
-					"Внимание!",
-					MessageBoxButtons.OK,
-					MessageBoxIcon.Warning);
-			}
-		}
-
 		private void chkSelectAll_CheckedChanged(object sender, EventArgs e)
 		{
 			if (chkSelectAll.CheckState == CheckState.Indeterminate || _settingCheckBoxes)
@@ -444,6 +432,25 @@ namespace NraDatabaseExport
 			finally
 			{
 				Cursor.Current = Cursors.Default;
+			}
+		}
+
+		private void LoadTables()
+		{
+			var currentProvider = (DbProviderBase)cboDatabaseType.SelectedItem;
+
+			try
+			{
+				chlTables.DataSource = currentProvider.GetTableNames();
+				SetTablesEnabled(true);
+			}
+			catch (Exception ex)
+			{
+				MessageBox.Show(
+					$"Грешка при свързване със сървъра: {ex}",
+					"Внимание!",
+					MessageBoxButtons.OK,
+					MessageBoxIcon.Warning);
 			}
 		}
 
