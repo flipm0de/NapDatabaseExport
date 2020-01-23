@@ -12,6 +12,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+		<PackageReference Include="CsvHelper" Version="13.0.0" />
 		<PackageReference Condition="$(DefineConstants.Contains(';SUPPORT_FIREBIRD'))" Include="FirebirdSql.Data.FirebirdClient" version="7.1.1" />
 		<PackageReference Condition="$(DefineConstants.Contains(';SUPPORT_MYSQL'))" Include="MySql.Data" version="8.0.19" />
 		<PackageReference Condition="$(DefineConstants.Contains(';SUPPORT_ODBC')) or $(DefineConstants.Contains(';SUPPORT_MSACCESS'))" Include="System.Data.Odbc" Version="4.7.0" />

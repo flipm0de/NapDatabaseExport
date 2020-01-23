@@ -1,11 +1,14 @@
 ﻿namespace NraDatabaseExport.ExportProviders
 {
+	/// <summary>
+	/// Represents an export provider for writing a comma-delimited CSV file.
+	/// </summary>
 	public class CommaCsvExportProvider : CsvExportProviderBase
 	{
 		#region ExportProvider Members
 
 		/// <inheritdoc/>
-		public override string ExportType
+		public override string Name
 			=> "CSV (Comma-Separated Values)";
 
 		/// <inheritdoc/>

@@ -36,8 +36,8 @@ namespace NraDatabaseExport
 #endif
 			};
 
-		private static readonly ExportProviderBase[] _exportProviders
-			= new ExportProviderBase[]
+		private static readonly IExportProvider[] _exportProviders
+			= new IExportProvider[]
 			{
 				new CommaCsvExportProvider(),
 				new SemicolonCsvExportProvider(),
@@ -59,11 +59,11 @@ namespace NraDatabaseExport
 			base.OnLoad(e);
 
 			IDbProvider[] databaseProviders = _dbProviders;
-			cboDatabaseType.DisplayMember = nameof(DbProviderBase.Name);
+			cboDatabaseType.DisplayMember = nameof(IDbProvider.Name);
 			cboDatabaseType.DataSource = databaseProviders;
 
-			ExportProviderBase[] dataExporters = _exportProviders;
-			cboExportType.DisplayMember = nameof(ExportProviderBase.Name);
+			IExportProvider[] dataExporters = _exportProviders;
+			cboExportType.DisplayMember = nameof(IExportProvider.Name);
 			cboExportType.DataSource = dataExporters;
 
 			txtExportFolder.Text = Directory.GetCurrentDirectory();
@@ -75,7 +75,7 @@ namespace NraDatabaseExport
 
 		private void cboDatabaseType_SelectedIndexChanged(object sender, EventArgs e)
 		{
-			var currentProvider = (DbProviderBase)cboDatabaseType.SelectedItem;
+			var currentProvider = (IDbProvider)cboDatabaseType.SelectedItem;
 
 			lblDatabaseFile.Enabled = currentProvider.UsesDatabaseFile;
 			txtDatabaseFile.Enabled = currentProvider.UsesDatabaseFile;
@@ -142,9 +142,9 @@ namespace NraDatabaseExport
 			SetTablesEnabled(false);
 			SetExportEnabled(false);
 
-			var currentProvider = (DbProviderBase)cboDatabaseType.SelectedItem;
+			var dbProvider = (IDbProvider)cboDatabaseType.SelectedItem;
 
-			if (currentProvider.UsesDatabaseFile)
+			if (dbProvider.UsesDatabaseFile)
 			{
 				if (string.IsNullOrWhiteSpace(txtDatabaseFile.Text) || !File.Exists(txtDatabaseFile.Text))
 				{
@@ -160,7 +160,7 @@ namespace NraDatabaseExport
 				}
 			}
 
-			if (currentProvider.UsesServer)
+			if (dbProvider.UsesServer)
 			{
 				if (string.IsNullOrWhiteSpace(txtServer.Text))
 				{
@@ -176,7 +176,7 @@ namespace NraDatabaseExport
 				}
 			}
 
-			if (currentProvider.UsesPort)
+			if (dbProvider.UsesPort)
 			{
 				if (nudPort.Value <= 0)
 				{
@@ -192,7 +192,7 @@ namespace NraDatabaseExport
 				}
 			}
 
-			if (currentProvider.RequiresUserName)
+			if (dbProvider.RequiresUserName)
 			{
 				if (string.IsNullOrWhiteSpace(txtUser.Text))
 				{
@@ -208,7 +208,7 @@ namespace NraDatabaseExport
 				}
 			}
 
-			if (currentProvider.RequiresPassword)
+			if (dbProvider.RequiresPassword)
 			{
 				if (string.IsNullOrWhiteSpace(txtPassword.Text))
 				{
@@ -224,19 +224,19 @@ namespace NraDatabaseExport
 				}
 			}
 
-			currentProvider.DatabaseFileName = txtDatabaseFile.Text;
-			currentProvider.ServerName = txtServer.Text;
-			currentProvider.Port = (int)nudPort.Value;
-			currentProvider.UserName = txtUser.Text;
-			currentProvider.Password = txtPassword.Text;
+			dbProvider.DatabaseFileName = txtDatabaseFile.Text;
+			dbProvider.ServerName = txtServer.Text;
+			dbProvider.Port = (int)nudPort.Value;
+			dbProvider.UserName = txtUser.Text;
+			dbProvider.Password = txtPassword.Text;
 
 			try
 			{
-				currentProvider.CreateConnection();
+				dbProvider.CreateConnection();
 
-				if (currentProvider.UsesDatabaseName)
+				if (dbProvider.UsesDatabaseName)
 				{
-					cboDatabase.DataSource = currentProvider.GetDatabaseNames();
+					cboDatabase.DataSource = dbProvider.GetDatabaseNames();
 
 					SetDatabaseEnabled(true);
 				}
@@ -260,7 +260,7 @@ namespace NraDatabaseExport
 			SetTablesEnabled(false);
 			SetExportEnabled(false);
 
-			var currentProvider = (DbProviderBase)cboDatabaseType.SelectedItem;
+			var currentProvider = (IDbProvider)cboDatabaseType.SelectedItem;
 
 			currentProvider.DatabaseName = (string)cboDatabase.SelectedValue;
 
@@ -354,8 +354,8 @@ namespace NraDatabaseExport
 					return;
 				}
 
-				var exportProvider = (ExportProviderBase)cboExportType.SelectedItem;
-				var databaseProvider = (DbProviderBase)cboDatabaseType.SelectedItem;
+				var dbProvider = (IDbProvider)cboDatabaseType.SelectedItem;
+				var exportProvider = (IExportProvider)cboExportType.SelectedItem;
 
 				string tableName = string.Empty;
 				int tableRow = 0;
@@ -372,7 +372,7 @@ namespace NraDatabaseExport
 
 						exportProvider.BeginWrite(fileName);
 
-						using (IDataReader reader = databaseProvider.ExecuteTableReader(tableName))
+						using (IDataReader reader = dbProvider.ExecuteTableReader(tableName))
 						{
 							tableRow++;
 
@@ -437,7 +437,7 @@ namespace NraDatabaseExport
 
 		private void LoadTables()
 		{
-			var currentProvider = (DbProviderBase)cboDatabaseType.SelectedItem;
+			var currentProvider = (IDbProvider)cboDatabaseType.SelectedItem;
 
 			try
 			{
