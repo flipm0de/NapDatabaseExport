@@ -45,6 +45,11 @@ namespace NraDatabaseExport
 		public MainForm()
 		{
 			InitializeComponent();
+		}
+
+		protected override void OnLoad(EventArgs e)
+		{
+			base.OnLoad(e);
 
 			IDbProvider[] databaseProviders = _dbProviders;
 			cboDatabaseType.DisplayMember = nameof(DbProviderBase.Name);
