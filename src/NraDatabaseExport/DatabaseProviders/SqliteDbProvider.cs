@@ -18,7 +18,7 @@ namespace NraDatabaseExport.DbProviders
 		#region DbProviderBase Members
 
 		/// <inheritdoc/>
-		public override string DatabaseTypeName
+		public override string Name
 			=> "SQLite";
 
 		/// <inheritdoc/>
@@ -107,12 +107,14 @@ namespace NraDatabaseExport.DbProviders
 		/// <inheritdoc/>
 		protected override void Dispose(bool disposing)
 		{
-			base.Dispose(disposing);
-
 			if (disposing)
 			{
 				_connection?.Dispose();
 			}
+
+			_connection = null;
+
+			base.Dispose(disposing);
 		}
 
 		#endregion

@@ -12,7 +12,7 @@ namespace NraDatabaseExport.DbProviders
 		#region IDbProvider Members
 
 		/// <inheritdoc/>
-		public abstract string DatabaseTypeName { get; }
+		public abstract string Name { get; }
 
 		/// <inheritdoc/>
 		public virtual bool UsesDatabaseFile

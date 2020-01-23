@@ -46,12 +46,12 @@ namespace NraDatabaseExport
 		{
 			InitializeComponent();
 
-			DbProviderBase[] databaseProviders = _dbProviders;
-			cboDatabaseType.DisplayMember = nameof(DbProviderBase.DatabaseTypeName);
+			IDbProvider[] databaseProviders = _dbProviders;
+			cboDatabaseType.DisplayMember = nameof(DbProviderBase.Name);
 			cboDatabaseType.DataSource = databaseProviders;
 
 			ExportProviderBase[] dataExporters = _exportProviders;
-			cboExportType.DisplayMember = nameof(ExportProviderBase.ExportType);
+			cboExportType.DisplayMember = nameof(ExportProviderBase.Name);
 			cboExportType.DataSource = dataExporters;
 
 			txtExportFolder.Text = Directory.GetCurrentDirectory();
@@ -377,7 +377,7 @@ namespace NraDatabaseExport
 						string fileName = Path.Combine(exportFolder,
 							tableName + exportProvider.DefaultFileExtension);
 
-						exportProvider.StartExport(fileName);
+						exportProvider.BeginWrite(fileName);
 
 						using (IDataReader reader = databaseProvider.ExecuteTableReader(tableName))
 						{
@@ -385,7 +385,7 @@ namespace NraDatabaseExport
 
 							if (!reader.Read())
 							{
-								exportProvider.FinishExport();
+								exportProvider.EndWrite();
 								continue;
 							}
 
@@ -396,7 +396,7 @@ namespace NraDatabaseExport
 								columns[j] = reader.GetName(j);
 							}
 
-							exportProvider.WriteColumnNames(columns);
+							exportProvider.WriteHeaderRow(columns);
 
 							var row = new object[reader.FieldCount];
 
@@ -414,11 +414,11 @@ namespace NraDatabaseExport
 									}
 								}
 
-								exportProvider.WriteRow(row);
+								exportProvider.WriteDataRow(row);
 							} while (reader.Read());
 						}
 
-						exportProvider.FinishExport();
+						exportProvider.EndWrite();
 					}
 
 					MessageBox.Show(

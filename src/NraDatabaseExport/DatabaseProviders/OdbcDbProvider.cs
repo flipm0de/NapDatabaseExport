@@ -22,7 +22,7 @@ namespace NraDatabaseExport.DbProviders
 		#region DbProviderBase Members
 
 		/// <inheritdoc/>
-		public override string DatabaseTypeName
+		public override string Name
 			=> IntPtr.Size == 4
 				? "ODBC32 източник на данни"
 				: "ODBC64 източник на данни";
@@ -172,12 +172,14 @@ namespace NraDatabaseExport.DbProviders
 		/// <inheritdoc/>
 		protected override void Dispose(bool disposing)
 		{
-			base.Dispose(disposing);
-
 			if (disposing)
 			{
 				_connection?.Dispose();
 			}
+
+			_connection = null;
+
+			base.Dispose(disposing);
 		}
 
 		#endregion

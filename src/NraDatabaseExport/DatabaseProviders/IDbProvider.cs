@@ -9,9 +9,9 @@ namespace NraDatabaseExport.DbProviders
 	public interface IDbProvider : IDisposable
 	{
 		/// <summary>
-		/// Gets the name of the database type.
+		/// Gets the name of the database provider.
 		/// </summary>
-		string DatabaseTypeName { get; }
+		string Name { get; }
 
 		/// <summary>
 		/// Gets the flag indicating whether the database is file-based or not.
