@@ -60,6 +60,7 @@
 				VerticalAlignment="Top"
 				Margin="10 0 0 0"
 				Content="Select"
+				Command="{Binding SelectExportPathCommand}"
 				/>
 		</Grid>
 		<StackPanel Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2"
@@ -69,7 +70,7 @@
 				x:Uid="GoBackToConfigureExportButton"
 				Margin="10 10 0 0"
 				Content="Back"
-				Command="{Binding GoBackToConfigureExportCommand}"
+				Command="{Binding GoBackToSelectTablesCommand}"
 				Style="{StaticResource MaterialDesignFlatLightBgButton}"
 				/>
 			<Button
