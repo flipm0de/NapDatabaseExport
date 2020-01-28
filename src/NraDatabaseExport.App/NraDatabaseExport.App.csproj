@@ -2,32 +2,40 @@
 
 	<PropertyGroup>
 		<OutputType>WinExe</OutputType>
-		<TargetFramework>netcoreapp3.0</TargetFramework>
+		<TargetFramework>netcoreapp3.1</TargetFramework>
 		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
 		<AssemblyName>NraDatabaseExport.App</AssemblyName>
 		<RootNamespace>NraDatabaseExport.App</RootNamespace>
 		<UseWpf>true</UseWpf>
 		<ApplicationIcon>Icons\app-icon.ico</ApplicationIcon>
 
-		<PublishTrimmed>true</PublishTrimmed>
-		<PublishReadyToRun>true</PublishReadyToRun>
-		<PublishSingleFile>true</PublishSingleFile>
 		<RuntimeIdentifier>win-x64</RuntimeIdentifier>
+		<SelfContained>false</SelfContained>
+		<PublishSingleFile>True</PublishSingleFile>
+		<PublishReadyToRun>True</PublishReadyToRun>
 	</PropertyGroup>
 
+	<!-- TODO: Trimming doesn't currently work -->
+
+	<!--
+	<PropertyGroup>
+		<PublishTrimmed>true</PublishTrimmed>
+	</PropertyGroup>
 	<ItemGroup>
-		<None Remove="appsettings.Archimed.json" />
+		<TrimmerRootAssembly Include="System.IO.FileSystem" />
+	</ItemGroup>
+	-->
+
+	<ItemGroup>
 		<None Remove="appsettings.json" />
+		<None Remove="appsettings.*.json" />
 	</ItemGroup>
 
 	<ItemGroup>
 		<Content Include="appsettings.json">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+			<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
 		</Content>
-	</ItemGroup>
-
-	<ItemGroup>
-		<TrimmerRootAssembly Include="System.IO.FileSystem" />
 	</ItemGroup>
 
 	<ItemGroup>
