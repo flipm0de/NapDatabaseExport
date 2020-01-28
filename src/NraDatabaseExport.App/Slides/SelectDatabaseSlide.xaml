@@ -52,11 +52,13 @@
 				Margin="10 10 0 0"
 				Content="Назад"
 				Command="{Binding GoBackToConfigureDatabaseCommand}"
+				Style="{StaticResource MaterialDesignFlatLightBgButton}"
 				/>
 			<Button
 				Margin="10 10 0 0"
 				Content="Напред"
 				Command="{Binding GoToSelectTablesCommand}"
+				Style="{StaticResource MaterialDesignFlatDarkBgButton}"
 				IsDefault="True"
 				/>
 		</StackPanel>

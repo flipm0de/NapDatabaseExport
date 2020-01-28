@@ -67,11 +67,13 @@
 				Margin="10 10 0 0"
 				Content="Назад"
 				Command="{Binding GoBackToConfigureExportCommand}"
+				Style="{StaticResource MaterialDesignFlatLightBgButton}"
 				/>
 			<Button
 				Margin="10 10 0 0"
 				Content="Напред"
 				Command="{Binding GoToReviewCommand}"
+				Style="{StaticResource MaterialDesignFlatDarkBgButton}"
 				IsDefault="True"
 				/>
 		</StackPanel>

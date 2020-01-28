@@ -37,6 +37,7 @@
 				Margin="10 10 0 0"
 				Content="Напред"
 				Command="{Binding GoToConfigureDatabaseCommand}"
+				Style="{StaticResource MaterialDesignFlatDarkBgButton}"
 				IsDefault="True"
 				/>
 		</StackPanel>
