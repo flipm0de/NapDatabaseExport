@@ -42,6 +42,8 @@ namespace NraDatabaseExport.App
 
 			services.Configure<ExportOptions>(exportOptionsSection);
 
+			services.AddTransient<IDialogService, DialogService>();
+
 			services.AddTransient<AppViewModel>();
 
 			services.AddTransient<MainWindow>();

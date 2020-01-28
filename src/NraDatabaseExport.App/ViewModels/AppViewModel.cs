@@ -1,19 +1,23 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
+using System.ComponentModel;
 using System.Data;
 using System.Data.Common;
 using System.IO;
+using System.Linq;
+using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
-using MaterialDesignThemes.Wpf;
+using System.Windows;
+using MvvmDialogs;
+using MvvmDialogs.FrameworkDialogs.FolderBrowser;
+using MvvmDialogs.FrameworkDialogs.MessageBox;
+using MvvmDialogs.FrameworkDialogs.OpenFile;
+using NraDatabaseExport.App.Infrastructure;
 using NraDatabaseExport.DbProviders;
 using NraDatabaseExport.ExportProviders;
-using NraDatabaseExport.App.Infrastructure;
-using System.Linq;
-using System.Collections.Generic;
-using System.Reflection;
-using System.Collections.Specialized;
-using System.ComponentModel;
 
 namespace NraDatabaseExport.App.ViewModels
 {
@@ -22,6 +26,7 @@ namespace NraDatabaseExport.App.ViewModels
 	/// </summary>
 	public class AppViewModel : ViewModelBase
 	{
+		private readonly IDialogService _dialogService;
 		private bool _isBusy;
 		private int _slideIndex;
 		private DbProviderViewModel _selectedDbProvider;
@@ -124,7 +129,7 @@ namespace NraDatabaseExport.App.ViewModels
 		/// <summary>
 		/// Gets or sets the server name.
 		/// </summary>
-		public string ServerName
+		public string? ServerName
 		{
 			get => _serverName;
 			set => SetProperty(ref _serverName, value);
@@ -160,7 +165,7 @@ namespace NraDatabaseExport.App.ViewModels
 		/// <summary>
 		/// Gets or sets the user name.
 		/// </summary>
-		public string UserName
+		public string? UserName
 		{
 			get => _userName;
 			set
@@ -189,7 +194,7 @@ namespace NraDatabaseExport.App.ViewModels
 		/// <summary>
 		/// Gets or sets the password.
 		/// </summary>
-		public string Password
+		public string? Password
 		{
 			get => _password;
 			set
@@ -356,8 +361,10 @@ namespace NraDatabaseExport.App.ViewModels
 		/// <summary>
 		/// Initializes a new instance of the <see cref="AppViewModel"/> class.
 		/// </summary>
-		public AppViewModel()
+		public AppViewModel(IDialogService dialogService)
 		{
+			_dialogService = dialogService ?? throw new ArgumentNullException(nameof(dialogService));
+
 			#region "Welcome" Slide
 
 			GoToConfigureDatabaseCommand = new DelegateCommand(GoToConfigureDatabase, CanGoToConfigureDatabase);
@@ -446,19 +453,19 @@ namespace NraDatabaseExport.App.ViewModels
 
 		private void SelectDatabaseFile(object parameter)
 		{
-			var openFileDialog = new Microsoft.Win32.OpenFileDialog
+			var dialogSettings = new OpenFileDialogSettings
 			{
 				CheckFileExists = true,
 				FileName = DatabaseFileName,
 			};
 
-			bool? result = openFileDialog.ShowDialog();
+			bool? result = _dialogService.ShowOpenFileDialog(this, dialogSettings);
 			if (result != true)
 			{
 				return;
 			}
 
-			DatabaseFileName = openFileDialog.FileName;
+			DatabaseFileName = dialogSettings.FileName;
 		}
 
 		private void GoBackToWelcome(object parameter)
@@ -579,7 +586,19 @@ namespace NraDatabaseExport.App.ViewModels
 
 		private void SelectExportPath(object parameter)
 		{
-			// TODO:
+			var dialogSettings = new FolderBrowserDialogSettings
+			{
+				ShowNewFolderButton = true,
+				SelectedPath = ExportPath,
+			};
+
+			bool? result = _dialogService.ShowFolderBrowserDialog(this, dialogSettings);
+			if (result != true)
+			{
+				return;
+			}
+
+			ExportPath = dialogSettings.SelectedPath;
 		}
 
 		private void GoBackToSelectTables(object parameter)
@@ -619,6 +638,12 @@ namespace NraDatabaseExport.App.ViewModels
 			try
 			{
 				await Export(cancellationToken);
+
+				_dialogService.ShowMessageBox(this,
+					$"The export has completed successfully.",
+					"Completed",
+					MessageBoxButton.OK,
+					MessageBoxImage.Information);
 			}
 			catch (Exception ex)
 			{
@@ -907,10 +932,6 @@ namespace NraDatabaseExport.App.ViewModels
 					}
 				}
 			}
-			catch (Exception ex)
-			{
-				await ShowError(ex, "Error exporting data");
-			}
 			finally
 			{
 				IsBusy = false;
@@ -919,11 +940,15 @@ namespace NraDatabaseExport.App.ViewModels
 
 		private Task ShowError(Exception ex, string title)
 		{
-			System.Windows.MessageBox.Show(
-				$"An error has occurred: {ex.Message}",
-				title,
-				System.Windows.MessageBoxButton.OK,
-				System.Windows.MessageBoxImage.Warning);
+			var dialogSettings = new MessageBoxSettings
+			{
+				Caption = "Error",
+				MessageBoxText = $"An error has occurred: {ex.Message}",
+				Button = MessageBoxButton.OK,
+				Icon = MessageBoxImage.Warning,
+			};
+
+			_dialogService.ShowMessageBox(this, dialogSettings);
 
 			return Task.CompletedTask;
 		}

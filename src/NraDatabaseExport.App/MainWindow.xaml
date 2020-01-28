@@ -7,6 +7,7 @@
 	xmlns:slides="clr-namespace:NraDatabaseExport.App.Slides"
 	xmlns:infrastructure="clr-namespace:NraDatabaseExport.App.Infrastructure"
 	xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+	xmlns:md="https://github.com/fantasticfiasco/mvvm-dialogs"
 	mc:Ignorable="d"
 	TextElement.Foreground="{DynamicResource MaterialDesignBody}"
 	TextElement.FontWeight="Regular"
@@ -21,7 +22,9 @@
 	MinWidth="300"
 	MaxWidth="1000"
 	SizeToContent="WidthAndHeight"
-	ResizeMode="CanMinimize">
+	ResizeMode="CanMinimize"
+	WindowStartupLocation="CenterScreen"
+	md:DialogServiceViews.IsRegistered="True">
 	<Window.Resources>
 		<infrastructure:InverseBooleanConverter x:Key="InverseBooleanConverter" />
 	</Window.Resources>
@@ -36,27 +39,5 @@
 			<slides:ConfigureExportSlide DataContext="{Binding}" />
 			<slides:ExportSlide DataContext="{Binding}" />
 		</materialDesign:Transitioner>
-		<materialDesign:DialogHost.DialogContent>
-			<Grid Margin="16">
-				<Grid.RowDefinitions>
-					<RowDefinition />
-					<RowDefinition />
-				</Grid.RowDefinitions>
-				<TextBlock Grid.Row="0"
-					Text="{Binding Title}"
-					Margin="0 6 0 0"
-					FontSize="18"
-					/>
-				<Button Grid.Row="1"
-					x:Uid="ErrorOkButton"
-					IsDefault="True"
-					Style="{DynamicResource MaterialDesignFlatButton}"
-					HorizontalAlignment="Right"
-					Margin="16 16 16 0"
-					Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"
-					Content="OK"
-					/>
-			</Grid>
-		</materialDesign:DialogHost.DialogContent>
 	</materialDesign:DialogHost>
 </Window>
