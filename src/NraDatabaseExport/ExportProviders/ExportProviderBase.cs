@@ -10,12 +10,6 @@ namespace NraDatabaseExport.ExportProviders
 	{
 		#region IExportProvider Members
 
-		/// <inheritdoc/>
-		public abstract string Name { get; }
-
-		/// <inheritdoc/>
-		public abstract string DefaultFileExtension { get; }
-
 		/// <summary>
 		/// Gets or sets the culture to use when exporting values.
 		/// </summary>
@@ -25,16 +19,13 @@ namespace NraDatabaseExport.ExportProviders
 		public CultureInfo Culture { get; set; } = CultureInfo.InvariantCulture;
 
 		/// <inheritdoc/>
-		public abstract void BeginWrite(string filePath);
+		public abstract void OpenWrite(string filePath);
 
 		/// <inheritdoc/>
 		public abstract void WriteHeaderRow(string[] columns);
 
 		/// <inheritdoc/>
 		public abstract void WriteDataRow(object[] values);
-
-		/// <inheritdoc/>
-		public abstract void EndWrite();
 
 		#endregion
 

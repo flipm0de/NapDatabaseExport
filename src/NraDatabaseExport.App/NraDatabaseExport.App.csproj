@@ -1,0 +1,30 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+
+	<PropertyGroup>
+		<OutputType>WinExe</OutputType>
+		<TargetFramework>netcoreapp3.0</TargetFramework>
+		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+		<AssemblyName>NraDatabaseExport.App</AssemblyName>
+		<RootNamespace>NraDatabaseExport.App</RootNamespace>
+		<UseWpf>true</UseWpf>
+		<ApplicationIcon>Icons\app-icon.ico</ApplicationIcon>
+
+		<PublishTrimmed>true</PublishTrimmed>
+		<PublishReadyToRun>true</PublishReadyToRun>
+		<PublishSingleFile>true</PublishSingleFile>
+		<RuntimeIdentifier>win-x64</RuntimeIdentifier>
+	</PropertyGroup>
+	
+	<ItemGroup>
+		<TrimmerRootAssembly Include="System.IO.FileSystem" />
+	</ItemGroup>
+	
+	<ItemGroup>
+		<ProjectReference Include="..\NraDatabaseExport\NraDatabaseExport.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="MaterialDesignThemes" Version="3.0.1" />
+	</ItemGroup>
+
+</Project>

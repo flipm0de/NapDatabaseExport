@@ -1,22 +1,13 @@
-﻿namespace NraDatabaseExport.ExportProviders
+﻿#if SUPPORT_CSV
+namespace NraDatabaseExport.ExportProviders
 {
 	/// <summary>
-	/// Represents an export provider for writing a semicolon-delimited CSV file.
+	/// Represents an export provider for writing a semicolon-separated CSV file.
 	/// </summary>
+	[ExportProvider(ExportProviderType.SemicolonCsv, "Semicolon-separated CSV",
+		DefaultExtension = ".csv")]
 	public class SemicolonCsvExportProvider : CsvExportProviderBase
 	{
-		#region ExportProvider Members
-
-		/// <inheritdoc/>
-		public override string Name
-			=> "CSV (Semicolon-Separated Values)";
-
-		/// <inheritdoc/>
-		public override string DefaultFileExtension
-			=> ".csv";
-
-		#endregion
-
 		#region CsvExportProviderBase Members
 
 		/// <inheritdoc/>
@@ -26,3 +17,4 @@
 		#endregion
 	}
 }
+#endif

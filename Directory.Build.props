@@ -7,9 +7,12 @@
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 
 		<LangVersion>8.0</LangVersion>
+		<Nullable>warnings</Nullable>
 
 		<RepositoryType>git</RepositoryType>
 		<RepositoryUrl>https://github.com/DavidHoldingAD/NraDatabaseExport</RepositoryUrl>
+
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 	</PropertyGroup>
 
 </Project>

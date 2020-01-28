@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if SUPPORT_CSV
+using System;
 using System.IO;
 using System.Text;
 using CsvHelper;
@@ -27,7 +28,7 @@ namespace NraDatabaseExport.ExportProviders
 		#region ExportProviderBase Members
 
 		/// <inheritdoc/>
-		public override void BeginWrite(string filePath)
+		public override void OpenWrite(string filePath)
 		{
 			StreamWriter writer = null;
 			CsvWriter csvWriter = null;
@@ -111,16 +112,11 @@ namespace NraDatabaseExport.ExportProviders
 		}
 
 		/// <inheritdoc/>
-		public override void EndWrite()
-		{
-			_csvWriter.Flush();
-		}
-
-		/// <inheritdoc/>
 		protected override void Dispose(bool disposing)
 		{
 			if (disposing)
 			{
+				_csvWriter?.Flush();
 				_csvWriter?.Dispose();
 				_csvWriter = null;
 
@@ -134,3 +130,4 @@ namespace NraDatabaseExport.ExportProviders
 		#endregion
 	}
 }
+#endif

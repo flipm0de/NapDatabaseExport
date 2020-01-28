@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.Common;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace NraDatabaseExport.DbProviders
 {
@@ -12,73 +15,34 @@ namespace NraDatabaseExport.DbProviders
 		#region IDbProvider Members
 
 		/// <inheritdoc/>
-		public abstract string Name { get; }
+		public string? DatabaseFileName { get; set; }
 
 		/// <inheritdoc/>
-		public virtual bool UsesDatabaseFile
-			=> false;
+		public string? ServerName { get; set; }
 
 		/// <inheritdoc/>
-		public string DatabaseFileName { get; set; }
+		public int? Port { get; set; }
 
 		/// <inheritdoc/>
-		public virtual bool UsesServer
-			=> false;
+		public string? UserName { get; set; }
 
 		/// <inheritdoc/>
-		public string ServerName { get; set; }
+		public string? Password { get; set; }
 
 		/// <inheritdoc/>
-		public virtual bool UsesPort
-			=> false;
+		public string? DatabaseName { get; set; }
 
 		/// <inheritdoc/>
-		public virtual int DefaultPort
-			=> 0;
+		public abstract Task<DbConnection> OpenConnectionAsync(CancellationToken cancellationToken = default);
 
 		/// <inheritdoc/>
-		public int Port { get; set; }
+		public abstract Task<DbDatabaseListItem[]> ListDatabasesAsync(DbConnection connection, CancellationToken cancellationToken = default);
 
 		/// <inheritdoc/>
-		public virtual bool UsesUserName
-			=> false;
+		public abstract Task<DbTableListItem[]> ListTablesAsync(DbConnection connection, CancellationToken cancellationToken = default);
 
 		/// <inheritdoc/>
-		public virtual bool RequiresUserName
-			=> false;
-
-		/// <inheritdoc/>
-		public string UserName { get; set; }
-
-		/// <inheritdoc/>
-		public virtual bool UsesPassword
-			=> false;
-
-		/// <inheritdoc/>
-		public virtual bool RequiresPassword
-			=> false;
-
-		/// <inheritdoc/>
-		public string Password { get; set; }
-
-		/// <inheritdoc/>
-		public virtual bool UsesDatabaseName
-			=> false;
-
-		/// <inheritdoc/>
-		public string DatabaseName { get; set; }
-
-		/// <inheritdoc/>
-		public abstract void CreateConnection();
-
-		/// <inheritdoc/>
-		public abstract string[] GetDatabaseNames();
-
-		/// <inheritdoc/>
-		public abstract string[] GetTableNames();
-
-		/// <inheritdoc/>
-		public abstract IDataReader ExecuteTableReader(string tableName);
+		public abstract Task<DbDataReader> ExecuteTableReaderAsync(DbConnection connection, string tableName, string? ownerName = null, CancellationToken cancellationToken = default);
 
 		#endregion
 
@@ -113,19 +77,21 @@ namespace NraDatabaseExport.DbProviders
 		/// <summary>
 		/// Executes a reader for the result of a command with a specified text.
 		/// </summary>
+		/// <param name="connection">the database connection to use</param>
 		/// <param name="commandText">the text of the command to execute</param>
 		/// <param name="parameters">the database parameters to associate with the command</param>
+		/// <param name="cancellationToken">the cancellation token</param>
 		/// <returns>the data reader containing the result of the command execution</returns>
-		protected IDataReader ExecuteReader(string commandText, params IDbDataParameter[] parameters)
+		protected async Task<DbDataReader> ExecuteReaderAsync(DbConnection connection, string commandText, IDbDataParameter[] parameters = null, CancellationToken cancellationToken = default)
 		{
 			if (commandText is null)
 			{
 				throw new ArgumentNullException(nameof(commandText));
 			}
 
-			IDbCommand command = CreateCommand(commandText, parameters);
+			DbCommand command = CreateCommand(connection, commandText, parameters);
 
-			IDataReader reader = command.ExecuteReader();
+			DbDataReader reader = await command.ExecuteReaderAsync(cancellationToken);
 
 			if (reader is null)
 			{
@@ -141,9 +107,10 @@ namespace NraDatabaseExport.DbProviders
 		/// <summary>
 		/// Creates a database command with the specified text.
 		/// </summary>
+		/// <param name="connection">the database connection to use</param>
 		/// <param name="commandText">the text of the command to create</param>
 		/// <param name="parameters">the list of database parameters to add to the command</param>
 		/// <returns>the created database command</returns>
-		protected abstract IDbCommand CreateCommand(string commandText, IEnumerable<IDbDataParameter> parameters = null);
+		protected abstract DbCommand CreateCommand(DbConnection connection, string commandText, IEnumerable<IDbDataParameter> parameters = null);
 	}
 }

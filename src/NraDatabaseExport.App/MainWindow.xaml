@@ -1,0 +1,58 @@
+﻿<Window
+	x:Class="NraDatabaseExport.App.MainWindow"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:slides="clr-namespace:NraDatabaseExport.App.Slides"
+	xmlns:infrastructure="clr-namespace:NraDatabaseExport.App.Infrastructure"
+	xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+	mc:Ignorable="d"
+	TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+	TextElement.FontWeight="Regular"
+	TextElement.FontSize="13"
+	TextOptions.TextFormattingMode="Ideal"
+	TextOptions.TextRenderingMode="Auto"
+	Background="{DynamicResource MaterialDesignPaper}"
+	FontFamily="{DynamicResource MaterialDesignFont}"
+	Title="NRA Database Export"
+	MinHeight="300"
+	MinWidth="300"
+	SizeToContent="WidthAndHeight"
+	ResizeMode="CanMinimize">
+	<Window.Resources>
+		<infrastructure:InverseBooleanConverter x:Key="InverseBooleanConverter" />
+	</Window.Resources>
+	<materialDesign:DialogHost Margin="10">
+		<materialDesign:Transitioner
+			SelectedIndex="{Binding SlideIndex}"
+			IsEnabled="{Binding IsBusy, Converter={StaticResource InverseBooleanConverter}}">
+			<slides:WelcomeSlide DataContext="{Binding}" />
+			<slides:ConfigureDatabaseSlide DataContext="{Binding}" />
+			<slides:SelectDatabaseSlide DataContext="{Binding}" />
+			<slides:SelectTablesSlide DataContext="{Binding}" />
+			<slides:ConfigureExportSlide DataContext="{Binding}" />
+		</materialDesign:Transitioner>
+		<materialDesign:DialogHost.DialogContent>
+			<Grid Margin="16">
+				<Grid.RowDefinitions>
+					<RowDefinition />
+					<RowDefinition />
+				</Grid.RowDefinitions>
+				<TextBlock Grid.Row="0"
+					Text="{Binding Title}"
+					Margin="0 6 0 0"
+					FontSize="18"
+					/>
+				<Button Grid.Row="1"
+					IsDefault="True"
+					Style="{DynamicResource MaterialDesignFlatButton}"
+					HorizontalAlignment="Right"
+					Margin="16 16 16 0"
+					Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"
+					Content="OK"
+					/>
+			</Grid>
+		</materialDesign:DialogHost.DialogContent>
+	</materialDesign:DialogHost>
+</Window>

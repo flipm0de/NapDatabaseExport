@@ -9,19 +9,6 @@ namespace NraDatabaseExport.ExportProviders
 	public interface IExportProvider : IDisposable
 	{
 		/// <summary>
-		/// Gets the name of the export provider.
-		/// </summary>
-		string Name { get; }
-
-		/// <summary>
-		/// Gets the default file extension.
-		/// </summary>
-		/// <remarks>
-		/// The extension should be prefixed with a dot as it is appended to the file name.
-		/// </remarks>
-		string DefaultFileExtension { get; }
-
-		/// <summary>
 		/// Gets or sets the culture to use when exporting values.
 		/// </summary>
 		public CultureInfo Culture { get; set; }
@@ -30,7 +17,7 @@ namespace NraDatabaseExport.ExportProviders
 		/// Begins writing the data into a file with a specified name.
 		/// </summary>
 		/// <param name="fileName">the name of the file to export data to</param>
-		void BeginWrite(string fileName);
+		void OpenWrite(string fileName);
 
 		/// <summary>
 		/// Writes a header row containing the names of the data columns.
@@ -43,10 +30,5 @@ namespace NraDatabaseExport.ExportProviders
 		/// </summary>
 		/// <param name="values"></param>
 		void WriteDataRow(object[] values);
-
-		/// <summary>
-		/// Ends writing the data into the file.
-		/// </summary>
-		void EndWrite();
 	}
 }
