@@ -11,7 +11,7 @@
 
 ### Introduction
 
-This project is aimed to fulfil the requirements of [Regulation N-18]((https://lex.bg/laws/ldoc/2135540645) by the Minister of Finance of
+This project is aimed to fulfil the requirements of [Regulation N-18](https://lex.bg/laws/ldoc/2135540645) by the Minister of Finance of
 Republic of Bulgaria.
 
 The regulation requires every vendor of a software that manages sales paid in cash to provide the source code of a tool to extract related
