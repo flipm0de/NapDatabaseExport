@@ -58,6 +58,10 @@ namespace NraDatabaseExport.ExportProviders
 			switch (type)
 			{
 #if SUPPORT_CSV
+				case ExportProviderType.Csv:
+					{
+						return typeof(CsvExportProvider);
+					}
 				case ExportProviderType.CommaCsv:
 					{
 						return typeof(CommaCsvExportProvider);
@@ -65,6 +69,12 @@ namespace NraDatabaseExport.ExportProviders
 				case ExportProviderType.SemicolonCsv:
 					{
 						return typeof(SemicolonCsvExportProvider);
+					}
+#endif
+#if SUPPORT_JSON
+				case ExportProviderType.Json:
+					{
+						return typeof(JsonExportProvider);
 					}
 #endif
 				default:

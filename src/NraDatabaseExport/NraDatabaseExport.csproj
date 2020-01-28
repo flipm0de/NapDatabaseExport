@@ -5,11 +5,14 @@
 		<AssemblyName>NraDatabaseExport</AssemblyName>
 		<RootNamespace>NraDatabaseExport</RootNamespace>
 
-		<DefineConstants>$(DefineConstants);SUPPORT_FIREBIRD;SUPPORT_MSACCESS;SUPPORT_MYSQL;SUPPORT_ODBC;SUPPORT_SQLITE;SUPPORT_SQLSERVER;SUPPORT_CSV</DefineConstants>
+		<DefineConstants>$(DefineConstants);SUPPORT_FIREBIRD;SUPPORT_MSACCESS;SUPPORT_MYSQL;SUPPORT_ODBC;SUPPORT_SQLITE;SUPPORT_SQLSERVER;SUPPORT_CSV;SUPPORT_JSON</DefineConstants>
+
+		<NoWarn>$(NoWarn);CA2100</NoWarn>
 	</PropertyGroup>
 
 	<ItemGroup>
 		<PackageReference Condition="$(DefineConstants.Contains(';SUPPORT_CSV'))" Include="CsvHelper" Version="13.0.0" />
+		<PackageReference Condition="$(DefineConstants.Contains(';SUPPORT_JSON'))" Include="System.Text.Json" Version="4.7.0" />
 		<PackageReference Condition="$(DefineConstants.Contains(';SUPPORT_FIREBIRD'))" Include="FirebirdSql.Data.FirebirdClient" version="7.1.1" />
 		<PackageReference Condition="$(DefineConstants.Contains(';SUPPORT_MYSQL'))" Include="MySql.Data" version="8.0.19" />
 		<PackageReference Condition="$(DefineConstants.Contains(';SUPPORT_ODBC')) or $(DefineConstants.Contains(';SUPPORT_MSACCESS'))" Include="System.Data.Odbc" Version="4.7.0" />

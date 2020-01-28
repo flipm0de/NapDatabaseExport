@@ -45,8 +45,10 @@ In order for the application to work correctly, the following system requirement
 
 ### Supported File Formats
 
+- CSV - a text file, the values of which are delimited in accordance with the current regional settings
 - Comma-separated CSV - a text file, the values of which are delimited with a "," (comma) symbol
 - Semicolon-separated CSV - a text file, the values of which are delimited with a ";" (semicolon) symbol
+- JSON - a text file following [RFC 8259](https://tools.ietf.org/html/rfc8259)
 
 ### Contribution
 
