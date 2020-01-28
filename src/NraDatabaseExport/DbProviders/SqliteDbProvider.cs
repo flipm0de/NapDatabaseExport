@@ -42,8 +42,8 @@ namespace NraDatabaseExport.DbProviders
 		}
 
 		/// <inheritdoc/>
-		public override async Task<DbDatabaseListItem[]> ListDatabasesAsync(DbConnection connection, CancellationToken cancellationToken = default)
-			=> Array.Empty<DbDatabaseListItem>();
+		public override Task<DbDatabaseListItem[]> ListDatabasesAsync(DbConnection connection, CancellationToken cancellationToken = default)
+			=> Task.FromResult(Array.Empty<DbDatabaseListItem>());
 
 		/// <inheritdoc/>
 		public override async Task<DbTableListItem[]> ListTablesAsync(DbConnection connection, CancellationToken cancellationToken = default)
