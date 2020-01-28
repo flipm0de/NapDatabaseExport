@@ -17,7 +17,9 @@
 	FontFamily="{DynamicResource MaterialDesignFont}"
 	Title="NRA Database Export"
 	MinHeight="300"
+	MaxHeight="750"
 	MinWidth="300"
+	MaxWidth="1000"
 	SizeToContent="WidthAndHeight"
 	ResizeMode="CanMinimize">
 	<Window.Resources>
@@ -32,6 +34,7 @@
 			<slides:SelectDatabaseSlide DataContext="{Binding}" />
 			<slides:SelectTablesSlide DataContext="{Binding}" />
 			<slides:ConfigureExportSlide DataContext="{Binding}" />
+			<slides:ExportSlide DataContext="{Binding}" />
 		</materialDesign:Transitioner>
 		<materialDesign:DialogHost.DialogContent>
 			<Grid Margin="16">
@@ -45,6 +48,7 @@
 					FontSize="18"
 					/>
 				<Button Grid.Row="1"
+					x:Uid="ErrorOkButton"
 					IsDefault="True"
 					Style="{DynamicResource MaterialDesignFlatButton}"
 					HorizontalAlignment="Right"

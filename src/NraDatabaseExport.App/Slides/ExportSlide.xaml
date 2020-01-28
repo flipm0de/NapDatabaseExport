@@ -1,0 +1,93 @@
+﻿<UserControl x:Class="NraDatabaseExport.App.Slides.ExportSlide"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:infrastructure="clr-namespace:NraDatabaseExport.App.Infrastructure"
+	Background="{DynamicResource MaterialDesignPaper}"
+	mc:Ignorable="d"
+	d:DesignHeight="400"
+	d:DesignWidth="350">
+	<UserControl.Resources>
+		<infrastructure:EscapeUnderscoreStringConverter x:Key="EscapeUnderscoreStringConverter" />
+	</UserControl.Resources>
+	<Grid>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="Auto" />
+			<ColumnDefinition Width="*" />
+		</Grid.ColumnDefinitions>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="*" />
+			<RowDefinition Height="Auto" />
+		</Grid.RowDefinitions>
+		<TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"
+			x:Uid="TitleTextBlock"
+			Margin="0 0 0 10"
+			Style="{StaticResource MaterialDesignSubtitle1TextBlock}"
+			Text="Експортиране на данни"
+			/>
+		<Label Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
+			x:Uid="TablesLabel"
+			HorizontalAlignment="Left"
+			VerticalAlignment="Top"
+			Content="Таблици:"
+			/>
+		<DataGrid Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"
+			HorizontalAlignment="Stretch"
+			VerticalAlignment="Top"
+			BorderBrush="LightGray"
+			BorderThickness="1"
+			MaxHeight="300"
+			ItemsSource="{Binding Tables}"
+			AutoGenerateColumns="False"
+			>
+			<DataGrid.RowStyle>
+				<Style TargetType="{x:Type DataGridRow}">
+					<Style.Triggers>
+						<DataTrigger Binding="{Binding IsSelected}" Value="True">
+							<Setter Property="Visibility" Value="Collapsed"/>
+						</DataTrigger>
+					</Style.Triggers>
+				</Style>
+			</DataGrid.RowStyle>
+			<DataGrid.Columns>
+				<DataGridTextColumn
+					x:Uid="TableDisplayNameDataGridTextColumn"
+					Header="Наименование"
+					Binding="{Binding DisplayName}"
+					Width="*"
+					/>
+				<DataGridTemplateColumn
+					x:Uid="TableStatusDataGridTemplateColumn"
+					Header="Статус"
+					>
+					<DataGridTemplateColumn.CellTemplate>
+						<DataTemplate>
+						</DataTemplate>
+					</DataGridTemplateColumn.CellTemplate>
+				</DataGridTemplateColumn>
+			</DataGrid.Columns>
+		</DataGrid>
+		<StackPanel Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2"
+			Orientation="Horizontal"
+			HorizontalAlignment="Right">
+			<Button
+				x:Uid="GoBackToSelectDatabaseButton"
+				Margin="10 10 0 0"
+				Content="Back"
+				Command="{Binding GoBackToSelectDatabaseCommand}"
+				Style="{StaticResource MaterialDesignFlatLightBgButton}"
+				/>
+			<Button
+				x:Uid="ExportButton"
+				Margin="10 10 0 0"
+				Content="Експортирай"
+				Command="{Binding ExportCommand}"
+				Style="{StaticResource MaterialDesignFlatDarkBgButton}"
+				IsDefault="True"
+				/>
+		</StackPanel>
+	</Grid>
+</UserControl>
