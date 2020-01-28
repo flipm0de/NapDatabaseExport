@@ -885,9 +885,15 @@ namespace NraDatabaseExport.App.ViewModels
 
 		private async Task ShowError(Exception ex, string title)
 		{
-			var errorViewModel = new ErrorViewModel(ex, title);
+			System.Windows.MessageBox.Show(
+				$"An error has occurred: {ex.Message}",
+				title,
+				System.Windows.MessageBoxButton.OK,
+				System.Windows.MessageBoxImage.Warning);
 
-			await DialogHost.Show(errorViewModel);
+			//var errorViewModel = new ErrorViewModel(ex, title);
+
+			//await DialogHost.Show(errorViewModel);
 		}
 
 		#region Nested Type: Slide
