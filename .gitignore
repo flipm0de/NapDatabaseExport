@@ -1,5 +1,2 @@
 .vs/
 .vscode/
-src/**/obj/
-src/**/bin/
-src/**/*.csproj.user
