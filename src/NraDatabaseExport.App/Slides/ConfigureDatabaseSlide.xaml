@@ -125,8 +125,8 @@
 		<PasswordBox Grid.Row="6" Grid.Column="1"
 			HorizontalAlignment="Stretch"
 			VerticalAlignment="Top"
-			wpf:WpfHelper.BindPassword="True"
-			wpf:WpfHelper.BoundPassword="{Binding Path=Password, Mode=TwoWay}"
+			wpf:PasswordBoxHelper.BindPassword="True"
+			wpf:PasswordBoxHelper.BoundPassword="{Binding Path=Password, Mode=TwoWay}"
 			IsEnabled="{Binding UsesPassword}"
 			/>
 		<StackPanel Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="2"

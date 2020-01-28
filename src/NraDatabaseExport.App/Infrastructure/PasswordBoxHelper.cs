@@ -3,16 +3,19 @@ using System.Windows.Controls;
 
 namespace NraDatabaseExport.App.Infrastructure
 {
-	public static class WpfHelper
+	/// <summary>
+	/// Contains helper methods for the <see cref="PasswordBox"/> control.
+	/// </summary>
+	public static class PasswordBoxHelper
 	{
 		public static readonly DependencyProperty BoundPassword
-			= DependencyProperty.RegisterAttached(nameof(BoundPassword), typeof(string), typeof(WpfHelper), new PropertyMetadata(string.Empty, OnBoundPasswordChanged));
+			= DependencyProperty.RegisterAttached(nameof(BoundPassword), typeof(string), typeof(PasswordBoxHelper), new PropertyMetadata(string.Empty, OnBoundPasswordChanged));
 
 		public static readonly DependencyProperty BindPassword
-			= DependencyProperty.RegisterAttached(nameof(BindPassword), typeof(bool), typeof(WpfHelper), new PropertyMetadata(false, OnBindPasswordChanged));
+			= DependencyProperty.RegisterAttached(nameof(BindPassword), typeof(bool), typeof(PasswordBoxHelper), new PropertyMetadata(false, OnBindPasswordChanged));
 
 		private static readonly DependencyProperty UpdatingPassword
-			= DependencyProperty.RegisterAttached(nameof(UpdatingPassword), typeof(bool), typeof(WpfHelper), new PropertyMetadata(false));
+			= DependencyProperty.RegisterAttached(nameof(UpdatingPassword), typeof(bool), typeof(PasswordBoxHelper), new PropertyMetadata(false));
 
 		private static void OnBoundPasswordChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
 		{
@@ -67,7 +70,7 @@ namespace NraDatabaseExport.App.Infrastructure
 
 		private static void HandlePasswordChanged(object sender, RoutedEventArgs e)
 		{
-			PasswordBox box = sender as PasswordBox;
+			var box = (PasswordBox)sender;
 
 			// set a flag to indicate that we're updating the password
 			SetUpdatingPassword(box, true);
