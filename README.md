@@ -31,7 +31,8 @@ The exact text of art.52в, p.2.3 states:
 
 In order for the application to work correctly, the following system requirements should be met:
 
-- .NET Core 3.0
+- Microsoft Windows 7+ (64-bit)
+- .NET Framework 4.6.1+
 
 ### Supported Databases
 
@@ -44,8 +45,8 @@ In order for the application to work correctly, the following system requirement
 
 ### Supported File Formats
 
-- CSV (Comma-Separated Values) - a text file, the values of which are delimited with a "," (comma) symbol
-- CSV (Semicolon-Separated Values) - a text file, the values of which are delimited with a ";" (semicolon) symbol
+- Comma-separated CSV - a text file, the values of which are delimited with a "," (comma) symbol
+- Semicolon-separated CSV - a text file, the values of which are delimited with a ";" (semicolon) symbol
 
 ### Quick Manual
 
