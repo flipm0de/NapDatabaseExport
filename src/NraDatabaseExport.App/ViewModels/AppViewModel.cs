@@ -275,6 +275,21 @@ namespace NraDatabaseExport.App.ViewModels
 		public ObservableCollection<DbTableViewModel> Tables { get; }
 
 		/// <summary>
+		/// Gets the command of selecting all tables.
+		/// </summary>
+		public DelegateCommand SelectAllTablesCommand { get; }
+
+		/// <summary>
+		/// Gets the command of deselecting all tables.
+		/// </summary>
+		public DelegateCommand DeselectAllTablesCommand { get; }
+
+		/// <summary>
+		/// Gets the command of inverting table selection.
+		/// </summary>
+		public DelegateCommand InvertAllTablesCommand { get; }
+
+		/// <summary>
 		/// Gets the command to go back to the "Select Database" slide.
 		/// </summary>
 		public DelegateCommand GoBackToSelectDatabaseCommand { get; }
@@ -407,6 +422,9 @@ namespace NraDatabaseExport.App.ViewModels
 
 			Tables.CollectionChanged += Tables_CollectionChanged;
 
+			SelectAllTablesCommand = new DelegateCommand(SelectAllTables);
+			DeselectAllTablesCommand = new DelegateCommand(DeselectAllTables);
+			InvertAllTablesCommand = new DelegateCommand(InvertAllTables);
 			GoBackToSelectDatabaseCommand = new DelegateCommand(GoBackToSelectDatabase);
 			GoToConfigureExportCommand = new DelegateCommand(GoToConfigureExport, CanGoToConfigureExport);
 
@@ -520,6 +538,44 @@ namespace NraDatabaseExport.App.ViewModels
 
 		#region "Select Database" Slide Commands
 
+		private void Databases_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+		{
+			switch (e.Action)
+			{
+				case NotifyCollectionChangedAction.Add:
+					{
+						foreach (INotifyPropertyChanged item in e.NewItems)
+						{
+							if (item is null)
+							{
+								continue;
+							}
+
+							item.PropertyChanged += DatabasesItem_PropertyChanged;
+						}
+						break;
+					}
+				case NotifyCollectionChangedAction.Remove:
+					{
+						foreach (INotifyPropertyChanged item in e.OldItems)
+						{
+							if (item is null)
+							{
+								continue;
+							}
+
+							item.PropertyChanged -= DatabasesItem_PropertyChanged;
+						}
+						break;
+					}
+			}
+		}
+
+		private void DatabasesItem_PropertyChanged(object sender, PropertyChangedEventArgs e)
+		{
+			GoToSelectDatabaseCommand.NotifyCanExecuteChanged();
+		}
+
 		private void GoBackToConfigureDatabase(object parameter)
 			=> SlideIndex = (int)Slide.ConfigureDatabase;
 
@@ -561,6 +617,59 @@ namespace NraDatabaseExport.App.ViewModels
 		#endregion
 
 		#region "Select Tables" Slide Commands
+
+		private void SelectAllTables(object parameter)
+		{
+			Tables.ToList().ForEach(x => x.IsSelected = true);
+		}
+
+		private void DeselectAllTables(object parameter)
+		{
+			Tables.ToList().ForEach(x => x.IsSelected = false);
+		}
+
+		private void InvertAllTables(object parameter)
+		{
+			Tables.ToList().ForEach(x => x.IsSelected = !x.IsSelected);
+		}
+
+		private void Tables_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+		{
+			switch (e.Action)
+			{
+				case NotifyCollectionChangedAction.Add:
+					{
+						foreach (INotifyPropertyChanged item in e.NewItems)
+						{
+							if (item is null)
+							{
+								continue;
+							}
+
+							item.PropertyChanged += TablesItem_PropertyChanged;
+						}
+						break;
+					}
+				case NotifyCollectionChangedAction.Remove:
+					{
+						foreach (INotifyPropertyChanged item in e.OldItems)
+						{
+							if (item is null)
+							{
+								continue;
+							}
+
+							item.PropertyChanged -= TablesItem_PropertyChanged;
+						}
+						break;
+					}
+			}
+		}
+
+		private void TablesItem_PropertyChanged(object sender, PropertyChangedEventArgs e)
+		{
+			GoToConfigureExportCommand.NotifyCanExecuteChanged();
+		}
 
 		private void GoBackToSelectDatabase(object parameter)
 			=> SlideIndex = (int)Slide.SelectDatabase;
@@ -715,82 +824,6 @@ namespace NraDatabaseExport.App.ViewModels
 			};
 
 			return viewModel;
-		}
-
-		private void Databases_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
-		{
-			switch (e.Action)
-			{
-				case NotifyCollectionChangedAction.Add:
-					{
-						foreach (INotifyPropertyChanged item in e.NewItems)
-						{
-							if (item is null)
-							{
-								continue;
-							}
-
-							item.PropertyChanged += DatabasesItem_PropertyChanged;
-						}
-						break;
-					}
-				case NotifyCollectionChangedAction.Remove:
-					{
-						foreach (INotifyPropertyChanged item in e.OldItems)
-						{
-							if (item is null)
-							{
-								continue;
-							}
-
-							item.PropertyChanged -= DatabasesItem_PropertyChanged;
-						}
-						break;
-					}
-			}
-		}
-
-		private void DatabasesItem_PropertyChanged(object sender, PropertyChangedEventArgs e)
-		{
-			GoToSelectDatabaseCommand.NotifyCanExecuteChanged();
-		}
-
-		private void Tables_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
-		{
-			switch (e.Action)
-			{
-				case NotifyCollectionChangedAction.Add:
-					{
-						foreach (INotifyPropertyChanged item in e.NewItems)
-						{
-							if (item is null)
-							{
-								continue;
-							}
-
-							item.PropertyChanged += TablesItem_PropertyChanged;
-						}
-						break;
-					}
-				case NotifyCollectionChangedAction.Remove:
-					{
-						foreach (INotifyPropertyChanged item in e.OldItems)
-						{
-							if (item is null)
-							{
-								continue;
-							}
-
-							item.PropertyChanged -= TablesItem_PropertyChanged;
-						}
-						break;
-					}
-			}
-		}
-
-		private void TablesItem_PropertyChanged(object sender, PropertyChangedEventArgs e)
-		{
-			GoToConfigureExportCommand.NotifyCanExecuteChanged();
 		}
 
 		/// <summary>

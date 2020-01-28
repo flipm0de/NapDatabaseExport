@@ -38,7 +38,7 @@
 			BorderThickness="1"
 			ItemsSource="{Binding Databases}"
 			SelectionMode="Single"
-			SelectedItem="{Binding SelectedDatabase, Mode=TwoWay}"
+			SelectedItem="{Binding SelectedDatabase, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
 			DisplayMemberPath="Name"
 			>
 			<ListBox.ItemContainerStyle>

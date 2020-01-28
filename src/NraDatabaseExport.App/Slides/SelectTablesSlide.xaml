@@ -19,6 +19,7 @@
 		<Grid.RowDefinitions>
 			<RowDefinition Height="Auto" />
 			<RowDefinition Height="Auto" />
+			<RowDefinition Height="Auto" />
 			<RowDefinition Height="*" />
 			<RowDefinition Height="Auto" />
 		</Grid.RowDefinitions>
@@ -34,23 +35,64 @@
 			VerticalAlignment="Top"
 			Content="Таблици:"
 			/>
-		<ListBox Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"
+		<StackPanel Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"
+			Orientation="Horizontal"
+			HorizontalAlignment="Left">
+			<Button
+				x:Uid="SelectAllTablesButton"
+				Margin="0 5 5 5"
+				Content="Добави всички"
+				Command="{Binding SelectAllTablesCommand}"
+				Style="{StaticResource MaterialDesignFlatLightBgButton}"
+				/>
+			<Button
+				x:Uid="DeselectAllTablesButton"
+				Margin="0 5 5 5"
+				Content="Премахни всички"
+				Command="{Binding DeselectAllTablesCommand}"
+				Style="{StaticResource MaterialDesignFlatLightBgButton}"
+				/>
+			<Button
+				x:Uid="InvertAllTablesButton"
+				Margin="0 5 5 5"
+				Content="Обърни избора"
+				Command="{Binding InvertAllTablesCommand}"
+				Style="{StaticResource MaterialDesignFlatLightBgButton}"
+				/>
+		</StackPanel>
+		<DataGrid Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2"
 			HorizontalAlignment="Stretch"
 			VerticalAlignment="Top"
 			BorderBrush="LightGray"
 			BorderThickness="1"
 			MaxHeight="300"
 			ItemsSource="{Binding Tables}"
-			SelectionMode="Multiple"
-			DisplayMemberPath="DisplayName"
+			AutoGenerateColumns="False"
+			SelectionMode="Extended"
+			
 			>
-			<ListBox.ItemContainerStyle>
-				<Style TargetType="ListBoxItem">
-					<Setter Property="IsSelected" Value="{Binding IsSelected}" />
-				</Style>
-			</ListBox.ItemContainerStyle>
-		</ListBox>
-		<StackPanel Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2"
+			<DataGrid.Columns>
+				<DataGridTemplateColumn
+					x:Uid="TableIsSelectedDataGridTemplateColumn"
+					Header="Избрана">
+					<DataGridTemplateColumn.CellTemplate>
+						<DataTemplate>
+							<CheckBox
+								HorizontalAlignment="Center"
+								IsChecked="{Binding Path=IsSelected, UpdateSourceTrigger=PropertyChanged}"
+								/>
+						</DataTemplate>
+					</DataGridTemplateColumn.CellTemplate>
+				</DataGridTemplateColumn>
+				<DataGridTextColumn
+					x:Uid="TableDisplayNameDataGridTextColumn"
+					Header="Наименование"
+					Binding="{Binding DisplayName}"
+					IsReadOnly="True"
+					/>
+			</DataGrid.Columns>
+		</DataGrid>
+		<StackPanel Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2"
 			Orientation="Horizontal"
 			HorizontalAlignment="Right">
 			<Button

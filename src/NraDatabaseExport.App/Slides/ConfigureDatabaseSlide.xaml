@@ -43,7 +43,7 @@
 			HorizontalAlignment="Stretch"
 			VerticalAlignment="Top"
 			ItemsSource="{Binding DbProviders}"
-			SelectedItem="{Binding SelectedDbProvider, Mode=TwoWay}"
+			SelectedItem="{Binding SelectedDbProvider, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
 			DisplayMemberPath="DisplayName"
 			/>
 		<Label Grid.Row="2" Grid.Column="0"
@@ -85,7 +85,7 @@
 		<TextBox Grid.Row="3" Grid.Column="1"
 			HorizontalAlignment="Stretch"
 			VerticalAlignment="Top"
-			Text="{Binding ServerName, Mode=TwoWay}"
+			Text="{Binding ServerName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
 			IsEnabled="{Binding UsesServer}"
 			/>
 		<Label Grid.Row="4" Grid.Column="0"
@@ -98,7 +98,7 @@
 		<TextBox Grid.Row="4" Grid.Column="1"
 			HorizontalAlignment="Stretch"
 			VerticalAlignment="Top"
-			Text="{Binding Port, Mode=TwoWay, Converter={StaticResource StringInt32Converter}}"
+			Text="{Binding Port, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource StringInt32Converter}}"
 			PreviewTextInput="Port_PreviewTextInput"
 			IsEnabled="{Binding UsesPort}"
 			/>
@@ -112,7 +112,7 @@
 		<TextBox Grid.Row="5" Grid.Column="1"
 			HorizontalAlignment="Stretch"
 			VerticalAlignment="Top"
-			Text="{Binding UserName, Mode=TwoWay}"
+			Text="{Binding UserName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
 			IsEnabled="{Binding UsesUserName}"
 			/>
 		<Label Grid.Row="6" Grid.Column="0"

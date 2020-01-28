@@ -34,7 +34,7 @@
 			HorizontalAlignment="Stretch"
 			VerticalAlignment="Top"
 			ItemsSource="{Binding ExportProviders}"
-			SelectedItem="{Binding SelectedExportProvider, Mode=TwoWay}"
+			SelectedItem="{Binding SelectedExportProvider, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
 			DisplayMemberPath="DisplayName"
 			/>
 		<Label Grid.Row="2" Grid.Column="0"
