@@ -19,14 +19,16 @@
 			<RowDefinition Height="Auto" />
 		</Grid.RowDefinitions>
 		<TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"
+			x:Uid="TitleTextBlock"
 			Margin="0 0 0 10"
 			Style="{StaticResource MaterialDesignSubtitle1TextBlock}"
-			Text="Настройки на експорт"
+			Text="Export Settings"
 			/>
 		<Label Grid.Row="1" Grid.Column="0"
+			x:Uid="ExportProviderLabel"
 			HorizontalAlignment="Left"
 			VerticalAlignment="Top"
-			Content="Формат за експорт:"
+			Content="Export format:"
 			/>
 		<ComboBox Grid.Row="1" Grid.Column="1"
 			HorizontalAlignment="Stretch"
@@ -36,11 +38,11 @@
 			DisplayMemberPath="DisplayName"
 			/>
 		<Label Grid.Row="2" Grid.Column="0"
+			x:Uid="ExportPathLabel"
 			HorizontalAlignment="Left"
 			VerticalAlignment="Top"
-			Content="Папка за експорт:"
+			Content="Export path:"
 			/>
-
 		<Grid Grid.Row="2" Grid.Column="1">
 			<Grid.ColumnDefinitions>
 				<ColumnDefinition Width="*" />
@@ -49,30 +51,32 @@
 			<TextBox Grid.Row="0" Grid.Column="0"
 				HorizontalAlignment="Stretch"
 				VerticalAlignment="Top"
-				Text="{Binding ExportPath, Mode=TwoWay}"
+				Text="{Binding ExportPath}"
 				IsReadOnly="True"
 				/>
-			<!-- TODO: -->
-			<!--<Button Grid.Row="0" Grid.Column="1"
+			<Button Grid.Row="0" Grid.Column="1"
+				x:Uid="SelectExportPathButton"
 				HorizontalAlignment="Right"
 				VerticalAlignment="Top"
 				Margin="10 0 0 0"
-				Content="…"
-				/>-->
+				Content="Select"
+				/>
 		</Grid>
 		<StackPanel Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2"
 			Orientation="Horizontal"
 			HorizontalAlignment="Right">
 			<Button
+				x:Uid="GoBackToConfigureExportButton"
 				Margin="10 10 0 0"
-				Content="Назад"
+				Content="Back"
 				Command="{Binding GoBackToConfigureExportCommand}"
 				Style="{StaticResource MaterialDesignFlatLightBgButton}"
 				/>
 			<Button
+				x:Uid="GoToExportButton"
 				Margin="10 10 0 0"
-				Content="Напред"
-				Command="{Binding GoToReviewCommand}"
+				Content="Next"
+				Command="{Binding GoToExportCommand}"
 				Style="{StaticResource MaterialDesignFlatDarkBgButton}"
 				IsDefault="True"
 				/>

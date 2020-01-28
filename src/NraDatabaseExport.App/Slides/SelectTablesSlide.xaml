@@ -23,11 +23,13 @@
 			<RowDefinition Height="Auto" />
 		</Grid.RowDefinitions>
 		<TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"
+			x:Uid="TitleTextBlock"
 			Margin="0 0 0 10"
 			Style="{StaticResource MaterialDesignSubtitle1TextBlock}"
 			Text="Избор на таблици"
 			/>
 		<Label Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
+			x:Uid="TablesLabel"
 			HorizontalAlignment="Left"
 			VerticalAlignment="Top"
 			Content="Таблици:"
@@ -52,14 +54,16 @@
 			Orientation="Horizontal"
 			HorizontalAlignment="Right">
 			<Button
+				x:Uid="GoBackToSelectDatabaseButton"
 				Margin="10 10 0 0"
-				Content="Назад"
+				Content="Back"
 				Command="{Binding GoBackToSelectDatabaseCommand}"
 				Style="{StaticResource MaterialDesignFlatLightBgButton}"
 				/>
 			<Button
+				x:Uid="GoToConfigureExportButton"
 				Margin="10 10 0 0"
-				Content="Напред"
+				Content="Next"
 				Command="{Binding GoToConfigureExportCommand}"
 				Style="{StaticResource MaterialDesignFlatDarkBgButton}"
 				IsDefault="True"

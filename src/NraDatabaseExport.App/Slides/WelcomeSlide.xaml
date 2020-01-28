@@ -19,23 +19,26 @@
 			<RowDefinition Height="Auto" />
 		</Grid.RowDefinitions>
 		<TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"
+			x:Uid="ApplicationNameTextBox"
 			Margin="0 0 0 10"
 			Style="{StaticResource MaterialDesignHeadline4TextBlock}"
 			Text="NRA Database Export"
 			/>
 		<TextBlock Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
+			x:Uid="DescriptionTextBox"
 			HorizontalAlignment="Left"
 			VerticalAlignment="Top"
 			Style="{StaticResource MaterialDesignBody1TextBlock}"
 			TextWrapping="Wrap"
-			Text="Добре дошли в инструмента за експортиране на данни за НАП. Натиснете бутона &quot;Напред&quot;, за да продължите."
+			Text="Добре дошли в инструмента за експортиране на данни за НАП. Натиснете бутона &quot;Next&quot;, за да продължите."
 			/>
 		<StackPanel Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2"
 			Orientation="Horizontal"
 			HorizontalAlignment="Right">
 			<Button
+				x:Uid="GoToConfigureDatabaseButton"
 				Margin="10 10 0 0"
-				Content="Напред"
+				Content="Next"
 				Command="{Binding GoToConfigureDatabaseCommand}"
 				Style="{StaticResource MaterialDesignFlatDarkBgButton}"
 				IsDefault="True"
