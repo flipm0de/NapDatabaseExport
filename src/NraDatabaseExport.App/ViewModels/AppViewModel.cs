@@ -204,6 +204,11 @@ namespace NraDatabaseExport.App.ViewModels
 		}
 
 		/// <summary>
+		/// Gets the command to select a database file.
+		/// </summary>
+		public DelegateCommand SelectDatabaseFileCommand { get; }
+
+		/// <summary>
 		/// Gets the command to go back to the "Welcome" slide.
 		/// </summary>
 		public DelegateCommand GoBackToWelcomeCommand { get; }
@@ -318,6 +323,11 @@ namespace NraDatabaseExport.App.ViewModels
 		}
 
 		/// <summary>
+		/// Gets the command to select an export directory.
+		/// </summary>
+		public DelegateCommand SelectExportPathCommand { get; }
+
+		/// <summary>
 		/// Gets the command to go to the "Select Tables" slide.
 		/// </summary>
 		public DelegateCommand GoBackToSelectTablesCommand { get; }
@@ -365,6 +375,7 @@ namespace NraDatabaseExport.App.ViewModels
 
 			_selectedDbProvider = DbProviders.Count <= 0 ? null : DbProviders[0];
 
+			SelectDatabaseFileCommand = new DelegateCommand(SelectDatabaseFile);
 			GoBackToWelcomeCommand = new DelegateCommand(GoBackToWelcome);
 			GoToSelectDatabaseCommand = new AsyncDelegateCommand(GoToSelectDatabase, CanGoToSelectDatabase);
 
@@ -405,6 +416,7 @@ namespace NraDatabaseExport.App.ViewModels
 
 			_selectedExportProvider = ExportProviders.Count <= 0 ? null : ExportProviders[0];
 
+			SelectExportPathCommand = new DelegateCommand(SelectExportPath);
 			GoBackToSelectTablesCommand = new DelegateCommand(GoBackToSelectTables);
 			GoToExportCommand = new DelegateCommand(GoToExport, CanGoToExport);
 
@@ -431,6 +443,23 @@ namespace NraDatabaseExport.App.ViewModels
 		#endregion
 
 		#region "Configure Database" Slide Commands
+
+		private void SelectDatabaseFile(object parameter)
+		{
+			var openFileDialog = new Microsoft.Win32.OpenFileDialog
+			{
+				CheckFileExists = true,
+				FileName = DatabaseFileName,
+			};
+
+			bool? result = openFileDialog.ShowDialog();
+			if (result != true)
+			{
+				return;
+			}
+
+			DatabaseFileName = openFileDialog.FileName;
+		}
 
 		private void GoBackToWelcome(object parameter)
 			=> SlideIndex = (int)Slide.Welcome;
@@ -547,6 +576,11 @@ namespace NraDatabaseExport.App.ViewModels
 		#endregion
 
 		#region "Configure Export" Slide Commands
+
+		private void SelectExportPath(object parameter)
+		{
+			// TODO:
+		}
 
 		private void GoBackToSelectTables(object parameter)
 			=> SlideIndex = (int)Slide.SelectTables;
@@ -883,7 +917,7 @@ namespace NraDatabaseExport.App.ViewModels
 			}
 		}
 
-		private async Task ShowError(Exception ex, string title)
+		private Task ShowError(Exception ex, string title)
 		{
 			System.Windows.MessageBox.Show(
 				$"An error has occurred: {ex.Message}",
@@ -891,25 +925,44 @@ namespace NraDatabaseExport.App.ViewModels
 				System.Windows.MessageBoxButton.OK,
 				System.Windows.MessageBoxImage.Warning);
 
-			//var errorViewModel = new ErrorViewModel(ex, title);
-
-			//await DialogHost.Show(errorViewModel);
+			return Task.CompletedTask;
 		}
 
 		#region Nested Type: Slide
 
+		/// <summary>
+		/// Represents an enumeration of available slides.
+		/// </summary>
 		private enum Slide
 		{
+			/// <summary>
+			/// "Welcome" slide
+			/// </summary>
 			Welcome = 0,
 
+			/// <summary>
+			/// "Configure Database" slide
+			/// </summary>
 			ConfigureDatabase = 1,
 
+			/// <summary>
+			/// "Select Database" slide
+			/// </summary>
 			SelectDatabase = 2,
 
+			/// <summary>
+			/// "Select Tables" slide
+			/// </summary>
 			SelectTables = 3,
 
+			/// <summary>
+			/// "Configure Export" slide
+			/// </summary>
 			ConfigureExport = 4,
 
+			/// <summary>
+			/// "Export" slide
+			/// </summary>
 			Export = 5,
 		}
 
