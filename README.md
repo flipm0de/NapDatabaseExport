@@ -48,16 +48,6 @@ In order for the application to work correctly, the following system requirement
 - Comma-separated CSV - a text file, the values of which are delimited with a "," (comma) symbol
 - Semicolon-separated CSV - a text file, the values of which are delimited with a ";" (semicolon) symbol
 
-### Quick Manual
-
-In order to export information from the database:
-
-1. Select a local database/server.
-2. List the databases on the selected local database/server.
-3. List the tables in the selected database.
-4. Select the tables containing the data to export.
-5. Select the file format to export the data into.
-
 ### Contribution
 
 This project is a fork of [NapDatabaseExport](https://github.com/flipm0de/NapDatabaseExport).

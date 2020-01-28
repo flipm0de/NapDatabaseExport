@@ -53,14 +53,14 @@
 			<Button
 				x:Uid="GoBackToConfigureDatabaseButton"
 				Margin="10 10 0 0"
-				Content="Back"
+				Content="Назад"
 				Command="{Binding GoBackToConfigureDatabaseCommand}"
 				Style="{StaticResource MaterialDesignFlatLightBgButton}"
 				/>
 			<Button
 				x:Uid="GoToSelectTablesButton"
 				Margin="10 10 0 0"
-				Content="Next"
+				Content="Напред"
 				Command="{Binding GoToSelectTablesCommand}"
 				Style="{StaticResource MaterialDesignFlatDarkBgButton}"
 				IsDefault="True"

@@ -26,13 +26,13 @@
 			x:Uid="TitleTextBlock"
 			Margin="0 0 0 10"
 			Style="{StaticResource MaterialDesignSubtitle1TextBlock}"
-			Text="Експортиране на данни"
+			Text="Експортиране"
 			/>
 		<Label Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
 			x:Uid="TablesLabel"
 			HorizontalAlignment="Left"
 			VerticalAlignment="Top"
-			Content="Таблици:"
+			Content="Състояние:"
 			/>
 		<DataGrid Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"
 			HorizontalAlignment="Stretch"
@@ -72,7 +72,7 @@
 			<Button
 				x:Uid="GoBackToSelectDatabaseButton"
 				Margin="10 10 0 0"
-				Content="Back"
+				Content="Назад"
 				Command="{Binding GoBackToSelectDatabaseCommand}"
 				Style="{StaticResource MaterialDesignFlatLightBgButton}"
 				/>

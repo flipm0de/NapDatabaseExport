@@ -31,13 +31,13 @@
 			x:Uid="TitleTextBlock"
 			Margin="0 0 0 10"
 			Style="{StaticResource MaterialDesignSubtitle1TextBlock}"
-			Text="Настройки на база данни"
+			Text="Настройка на СУБД"
 			/>
 		<Label Grid.Row="1" Grid.Column="0"
 			x:Uid="DbProviderLabel"
 			HorizontalAlignment="Left"
 			VerticalAlignment="Top"
-			Content="Тип база данни:"
+			Content="Тип СУБД:"
 			/>
 		<ComboBox Grid.Row="1" Grid.Column="1"
 			HorizontalAlignment="Stretch"
@@ -135,14 +135,14 @@
 			<Button
 				x:Uid="GoBackToWelcomeButton"
 				Margin="10 10 0 0"
-				Content="Back"
+				Content="Назад"
 				Command="{Binding GoBackToWelcomeCommand}"
 				Style="{StaticResource MaterialDesignFlatLightBgButton}"
 				/>
 			<Button
 				x:Uid="GoToSelectDatabaseButton"
 				Margin="10 10 0 0"
-				Content="Next"
+				Content="Напред"
 				Command="{Binding GoToSelectDatabaseCommand}"
 				Style="{StaticResource MaterialDesignFlatDarkBgButton}"
 				IsDefault="True"

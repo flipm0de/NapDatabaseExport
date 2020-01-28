@@ -38,7 +38,7 @@
 			<Button
 				x:Uid="GoToConfigureDatabaseButton"
 				Margin="10 10 0 0"
-				Content="Next"
+				Content="Напред"
 				Command="{Binding GoToConfigureDatabaseCommand}"
 				Style="{StaticResource MaterialDesignFlatDarkBgButton}"
 				IsDefault="True"

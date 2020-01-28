@@ -22,13 +22,13 @@
 			x:Uid="TitleTextBlock"
 			Margin="0 0 0 10"
 			Style="{StaticResource MaterialDesignSubtitle1TextBlock}"
-			Text="Export Settings"
+			Text="Настройка на експорт"
 			/>
 		<Label Grid.Row="1" Grid.Column="0"
 			x:Uid="ExportProviderLabel"
 			HorizontalAlignment="Left"
 			VerticalAlignment="Top"
-			Content="Export format:"
+			Content="Тип експорт:"
 			/>
 		<ComboBox Grid.Row="1" Grid.Column="1"
 			HorizontalAlignment="Stretch"
@@ -41,7 +41,7 @@
 			x:Uid="ExportPathLabel"
 			HorizontalAlignment="Left"
 			VerticalAlignment="Top"
-			Content="Export path:"
+			Content="Път за експорт:"
 			/>
 		<Grid Grid.Row="2" Grid.Column="1">
 			<Grid.ColumnDefinitions>
@@ -69,14 +69,14 @@
 			<Button
 				x:Uid="GoBackToConfigureExportButton"
 				Margin="10 10 0 0"
-				Content="Back"
+				Content="Назад"
 				Command="{Binding GoBackToSelectTablesCommand}"
 				Style="{StaticResource MaterialDesignFlatLightBgButton}"
 				/>
 			<Button
 				x:Uid="GoToExportButton"
 				Margin="10 10 0 0"
-				Content="Next"
+				Content="Напред"
 				Command="{Binding GoToExportCommand}"
 				Style="{StaticResource MaterialDesignFlatDarkBgButton}"
 				IsDefault="True"
