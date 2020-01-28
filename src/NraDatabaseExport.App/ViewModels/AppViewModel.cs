@@ -952,7 +952,7 @@ namespace NraDatabaseExport.App.ViewModels
 		{
 			var dialogSettings = new MessageBoxSettings
 			{
-				Caption = "Error",
+				Caption = title,
 				MessageBoxText = $"An error has occurred: {ex.Message}",
 				Button = MessageBoxButton.OK,
 				Icon = MessageBoxImage.Warning,
