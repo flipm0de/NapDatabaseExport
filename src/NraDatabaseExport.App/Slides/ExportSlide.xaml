@@ -46,7 +46,7 @@
 			<DataGrid.RowStyle>
 				<Style TargetType="{x:Type DataGridRow}">
 					<Style.Triggers>
-						<DataTrigger Binding="{Binding IsSelected}" Value="True">
+						<DataTrigger Binding="{Binding IsSelected}" Value="False">
 							<Setter Property="Visibility" Value="Collapsed"/>
 						</DataTrigger>
 					</Style.Triggers>
@@ -59,15 +59,11 @@
 					Binding="{Binding DisplayName}"
 					Width="*"
 					/>
-				<DataGridTemplateColumn
-					x:Uid="TableStatusDataGridTemplateColumn"
+				<DataGridTextColumn
+					x:Uid="TableExportStatusDataGridTextColumn"
 					Header="Статус"
-					>
-					<DataGridTemplateColumn.CellTemplate>
-						<DataTemplate>
-						</DataTemplate>
-					</DataGridTemplateColumn.CellTemplate>
-				</DataGridTemplateColumn>
+					Binding="{Binding ExportStatus}"
+					/>
 			</DataGrid.Columns>
 		</DataGrid>
 		<StackPanel Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2"

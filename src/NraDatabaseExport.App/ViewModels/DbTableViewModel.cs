@@ -9,6 +9,7 @@ namespace NraDatabaseExport.App.ViewModels
 	public class DbTableViewModel : ViewModelBase
 	{
 		private bool _isSelected;
+		private DbTableExportStatus? _exportStatus;
 
 		/// <summary>
 		/// Gets the name of the table.
@@ -35,6 +36,15 @@ namespace NraDatabaseExport.App.ViewModels
 		{
 			get => _isSelected;
 			set => SetProperty(ref _isSelected, value);
+		}
+
+		/// <summary>
+		/// Gets or sets the status of the export.
+		/// </summary>
+		public DbTableExportStatus? ExportStatus
+		{
+			get => _exportStatus;
+			set => SetProperty(ref _exportStatus, value);
 		}
 
 		/// <summary>

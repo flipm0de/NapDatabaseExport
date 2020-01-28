@@ -877,12 +877,18 @@ namespace NraDatabaseExport.App.ViewModels
 					throw new DirectoryNotFoundException($@"Could not find directory ""{ExportPath}"" to export data to.");
 				}
 
+				Tables.ToList().ForEach(x => x.ExportStatus = null);
+
 				foreach (DbTableViewModel table in Tables)
 				{
 					if (!table.IsSelected)
 					{
+						table.ExportStatus = DbTableExportStatus.NotApplicable;
+
 						continue;
 					}
+
+					table.ExportStatus = DbTableExportStatus.Busy;
 
 					string tableName = table.Name;
 					string ownerName = table.OwnerName;
@@ -925,9 +931,13 @@ namespace NraDatabaseExport.App.ViewModels
 
 							exportProvider.WriteDataRow(values);
 						}
+
+						table.ExportStatus = DbTableExportStatus.Ok;
 					}
 					catch (Exception ex)
 					{
+						table.ExportStatus = DbTableExportStatus.Error;
+
 						throw new ApplicationException($"Could not export data from table {tableName} ({ownerName}), row {rowIndex}, column {columnIndex}.", ex);
 					}
 				}
