@@ -14,16 +14,30 @@
 		<PublishSingleFile>true</PublishSingleFile>
 		<RuntimeIdentifier>win-x64</RuntimeIdentifier>
 	</PropertyGroup>
-	
+
+	<ItemGroup>
+		<None Remove="appsettings.Archimed.json" />
+		<None Remove="appsettings.json" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Content Include="appsettings.json">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+	</ItemGroup>
+
 	<ItemGroup>
 		<TrimmerRootAssembly Include="System.IO.FileSystem" />
 	</ItemGroup>
-	
+
 	<ItemGroup>
 		<ProjectReference Include="..\NraDatabaseExport\NraDatabaseExport.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>
+		<PackageReference Include="Microsoft.Extensions.Configuration" Version="3.1.1" />
+		<PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="3.1.1" />
+		<PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="3.1.1" />
 		<PackageReference Include="MaterialDesignThemes" Version="3.0.1" />
 	</ItemGroup>
 

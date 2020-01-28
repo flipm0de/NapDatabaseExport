@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Configuration;
 using System.Linq;
 using System.Windows;
+using Microsoft.Extensions.Options;
 using NraDatabaseExport.App.ViewModels;
-using NraDatabaseExport.DbProviders;
-using NraDatabaseExport.ExportProviders;
 
 namespace NraDatabaseExport.App
 {
@@ -13,14 +11,17 @@ namespace NraDatabaseExport.App
 	/// </summary>
 	public partial class MainWindow : Window
 	{
+		private readonly IOptions<ExportOptions> _exportOptions;
 		private readonly AppViewModel _viewModel;
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="MainWindow"/> class.
 		/// </summary>
-		public MainWindow()
+		public MainWindow(IOptions<ExportOptions> exportOptions,
+			AppViewModel viewModel)
 		{
-			_viewModel = new AppViewModel();
+			_exportOptions = exportOptions ?? throw new ArgumentNullException(nameof(exportOptions));
+			_viewModel = viewModel ?? throw new ArgumentNullException(nameof(viewModel));
 
 			DataContext = _viewModel;
 
@@ -32,26 +33,24 @@ namespace NraDatabaseExport.App
 		{
 			base.OnInitialized(e);
 
-			string? dbProviderTypeName = ConfigurationManager.AppSettings["SelectedDbProviderType"];
-			if (!string.IsNullOrWhiteSpace(dbProviderTypeName)
-				&& Enum.TryParse(dbProviderTypeName, true, out DbProviderType dbProviderType))
+			if (_exportOptions.Value.DbProviderType != null)
 			{
-				DbProviderViewModel dbProviderViewModel = _viewModel.DbProviders.FirstOrDefault(x => x.Type == dbProviderType);
+				DbProviderViewModel dbProviderViewModel = _viewModel.DbProviders
+					.FirstOrDefault(x => x.Type == _exportOptions.Value.DbProviderType.Value);
 
 				_viewModel.SelectedDbProvider = dbProviderViewModel;
 			}
 
-			_viewModel.ServerName = ConfigurationManager.AppSettings["ServerName"];
+			_viewModel.ServerName = _exportOptions.Value.ServerName;
 
-			_viewModel.UserName = ConfigurationManager.AppSettings["UserName"];
+			_viewModel.UserName = _exportOptions.Value.UserName;
 
-			_viewModel.Password = ConfigurationManager.AppSettings["Password"];
+			_viewModel.Password = _exportOptions.Value.Password;
 
-			string? exportProviderTypeName = ConfigurationManager.AppSettings["SelectedExportProviderType"];
-			if (!string.IsNullOrWhiteSpace(exportProviderTypeName)
-				&& Enum.TryParse(exportProviderTypeName, true, out ExportProviderType exportProviderType))
+			if (_exportOptions.Value.ExportProviderType != null)
 			{
-				ExportProviderViewModel exportProviderViewModel = _viewModel.ExportProviders.FirstOrDefault(x => x.Type == exportProviderType);
+				ExportProviderViewModel exportProviderViewModel = _viewModel.ExportProviders
+					.FirstOrDefault(x => x.Type == _exportOptions.Value.ExportProviderType.Value);
 
 				_viewModel.SelectedExportProvider = exportProviderViewModel;
 			}
