@@ -32,7 +32,7 @@ The exact text of art.52в, p.2.3 states:
 In order for the application to work correctly, the following system requirements should be met:
 
 - Microsoft Windows 7+ (64-bit)
-- .NET Framework 4.6.1+
+- .NET Core 3.1+
 
 ### Supported Databases
 
