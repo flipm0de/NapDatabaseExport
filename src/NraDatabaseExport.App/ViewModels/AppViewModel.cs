@@ -484,6 +484,11 @@ namespace NraDatabaseExport.App.ViewModels
 				SelectedExportProvider = exportProviderViewModel;
 			}
 
+			if (_exportOptions.Value.ExportPath != null)
+			{
+				ExportPath = _exportOptions.Value.ExportPath;
+			}
+
 			#endregion
 
 			SlideIndex = (int)Slide.Welcome;
@@ -926,7 +931,7 @@ namespace NraDatabaseExport.App.ViewModels
 
 			if (!(_exportOptions.Value.Tables is null))
 			{
-				foreach(DbTableOptionListItem tableOptionListItem in _exportOptions.Value.Tables)
+				foreach (DbTableOptionListItem tableOptionListItem in _exportOptions.Value.Tables)
 				{
 					DbTableViewModel table = Tables
 						.FirstOrDefault(x => x.Name == tableOptionListItem.Name

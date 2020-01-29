@@ -47,5 +47,10 @@ namespace NraDatabaseExport.App.Options
 		/// Gets or sets the export provider type.
 		/// </summary>
 		public ExportProviderType? ExportProviderType { get; set; }
+
+		/// <summary>
+		/// Gets or sets the export path.
+		/// </summary>
+		public string ExportPath { get; set; }
 	}
 }
