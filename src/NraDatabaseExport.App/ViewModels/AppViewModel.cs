@@ -11,6 +11,7 @@ using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using Microsoft.Extensions.Options;
 using MvvmDialogs;
 using MvvmDialogs.FrameworkDialogs.FolderBrowser;
 using MvvmDialogs.FrameworkDialogs.MessageBox;
@@ -27,6 +28,7 @@ namespace NraDatabaseExport.App.ViewModels
 	public class AppViewModel : ViewModelBase
 	{
 		private readonly IDialogService _dialogService;
+		private readonly IOptions<ExportOptions> _exportOptions;
 		private bool _isBusy;
 		private int _slideIndex;
 		private DbProviderViewModel _selectedDbProvider;
@@ -376,9 +378,11 @@ namespace NraDatabaseExport.App.ViewModels
 		/// <summary>
 		/// Initializes a new instance of the <see cref="AppViewModel"/> class.
 		/// </summary>
-		public AppViewModel(IDialogService dialogService)
+		public AppViewModel(IDialogService dialogService,
+			IOptions<ExportOptions> exportOptions)
 		{
 			_dialogService = dialogService ?? throw new ArgumentNullException(nameof(dialogService));
+			_exportOptions = exportOptions ?? throw new ArgumentNullException(nameof(exportOptions));
 
 			#region "Welcome" Slide
 
@@ -451,6 +455,32 @@ namespace NraDatabaseExport.App.ViewModels
 
 			GoBackToConfigureExportCommand = new DelegateCommand(GoBackToConfigureExport);
 			ExportCommand = new AsyncDelegateCommand(Export, CanExport);
+
+			#endregion
+
+			#region Apply Export Options
+
+			if (exportOptions.Value.DbProviderType != null)
+			{
+				DbProviderViewModel dbProviderViewModel = DbProviders
+					.FirstOrDefault(x => x.Type == exportOptions.Value.DbProviderType.Value);
+
+				SelectedDbProvider = dbProviderViewModel;
+			}
+
+			ServerName = exportOptions.Value.ServerName;
+
+			UserName = exportOptions.Value.UserName;
+
+			Password = exportOptions.Value.Password;
+
+			if (_exportOptions.Value.ExportProviderType != null)
+			{
+				ExportProviderViewModel exportProviderViewModel = ExportProviders
+					.FirstOrDefault(x => x.Type == _exportOptions.Value.ExportProviderType.Value);
+
+				SelectedExportProvider = exportProviderViewModel;
+			}
 
 			#endregion
 
@@ -831,10 +861,7 @@ namespace NraDatabaseExport.App.ViewModels
 		/// </summary>
 		private async Task RefreshDatabases(CancellationToken cancellationToken)
 		{
-			// Reset database to prevent an attempt to open a connection to inexisting database
-			SelectedDatabase = null;
-
-			using IDbProvider dbProvider = CreateDbProvider();
+			using IDbProvider dbProvider = CreateDbProvider(null);
 
 			using DbConnection connection = await dbProvider.OpenConnectionAsync(cancellationToken: cancellationToken);
 
@@ -854,9 +881,23 @@ namespace NraDatabaseExport.App.ViewModels
 			{
 				SelectedDatabase = null;
 			}
-			else
+			else if (_exportOptions.Value.DatabaseName is null)
 			{
 				SelectedDatabase = Databases[0];
+			}
+			else
+			{
+				DbDatabaseViewModel database = Databases
+					.FirstOrDefault(x => x.Name == _exportOptions.Value.DatabaseName);
+
+				if (database is null)
+				{
+					SelectedDatabase = Databases[0];
+				}
+				else
+				{
+					SelectedDatabase = database;
+				}
 			}
 		}
 
@@ -865,7 +906,7 @@ namespace NraDatabaseExport.App.ViewModels
 		/// </summary>
 		private async Task RefreshTables(CancellationToken cancellationToken)
 		{
-			using IDbProvider dbProvider = CreateDbProvider();
+			using IDbProvider dbProvider = CreateDbProvider(SelectedDatabase.Name);
 
 			using DbConnection connection = await dbProvider.OpenConnectionAsync(cancellationToken: cancellationToken);
 
@@ -882,7 +923,7 @@ namespace NraDatabaseExport.App.ViewModels
 			}
 		}
 
-		private IDbProvider CreateDbProvider()
+		private IDbProvider CreateDbProvider(string? databaseName)
 		{
 			IDbProvider provider = NraDatabaseExport.DbProviders.DbProviderFactory.CreateProvider(SelectedDbProvider.Type);
 
@@ -891,7 +932,7 @@ namespace NraDatabaseExport.App.ViewModels
 			provider.Port = Port;
 			provider.UserName = UserName;
 			provider.Password = Password;
-			provider.DatabaseName = SelectedDatabase?.Name;
+			provider.DatabaseName = databaseName;
 
 			return provider;
 		}
@@ -932,7 +973,7 @@ namespace NraDatabaseExport.App.ViewModels
 
 					try
 					{
-						using IDbProvider dbProvider = CreateDbProvider();
+						using IDbProvider dbProvider = CreateDbProvider(SelectedDatabase.Name);
 
 						using DbConnection connection = await dbProvider.OpenConnectionAsync(cancellationToken: cancellationToken);
 

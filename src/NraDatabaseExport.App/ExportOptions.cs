@@ -34,9 +34,9 @@ namespace NraDatabaseExport.App
 		public string? Password { get; set; }
 
 		/// <summary>
-		/// Gets or sets the database.
+		/// Gets or sets the name of the database.
 		/// </summary>
-		public string? Database { get; set; }
+		public string? DatabaseName { get; set; }
 
 		/// <summary>
 		/// Gets or sets the array of tables.
