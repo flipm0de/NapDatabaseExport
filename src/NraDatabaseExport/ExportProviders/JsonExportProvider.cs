@@ -21,7 +21,7 @@ namespace NraDatabaseExport.ExportProviders
 		#region ExportProviderBase Members
 
 		/// <inheritdoc/>
-		public override async Task OpenWriteAsync(string filePath, CancellationToken cancellationToken = default)
+		public override async ValueTask OpenWriteAsync(string filePath, CancellationToken cancellationToken = default)
 		{
 			Stream stream = null;
 			Utf8JsonWriter jsonWriter = null;
@@ -59,7 +59,7 @@ namespace NraDatabaseExport.ExportProviders
 		}
 
 		/// <inheritdoc/>
-		public override Task WriteHeaderRowAsync(string[] columns, CancellationToken cancellationToken = default)
+		public override ValueTask WriteHeaderRowAsync(string[] columns, CancellationToken cancellationToken = default)
 		{
 			if (columns is null)
 			{
@@ -82,11 +82,11 @@ namespace NraDatabaseExport.ExportProviders
 
 			_jsonWriter.WriteEndArray();
 
-			return Task.CompletedTask;
+			return default;
 		}
 
 		/// <inheritdoc/>
-		public override Task WriteDataRowAsync(object[] values, CancellationToken cancellationToken = default)
+		public override ValueTask WriteDataRowAsync(object[] values, CancellationToken cancellationToken = default)
 		{
 			if (values is null)
 			{
@@ -182,7 +182,7 @@ namespace NraDatabaseExport.ExportProviders
 
 			_jsonWriter.WriteEndArray();
 
-			return Task.CompletedTask;
+			return default;
 		}
 
 		/// <inheritdoc/>

@@ -33,16 +33,16 @@ namespace NraDatabaseExport.DbProviders
 		public string? DatabaseName { get; set; }
 
 		/// <inheritdoc/>
-		public abstract Task<DbConnection> OpenConnectionAsync(CancellationToken cancellationToken = default);
+		public abstract ValueTask<DbConnection> OpenConnectionAsync(CancellationToken cancellationToken = default);
 
 		/// <inheritdoc/>
-		public abstract Task<DbDatabaseListItem[]> ListDatabasesAsync(DbConnection connection, CancellationToken cancellationToken = default);
+		public abstract ValueTask<DbDatabaseListItem[]> ListDatabasesAsync(DbConnection connection, CancellationToken cancellationToken = default);
 
 		/// <inheritdoc/>
-		public abstract Task<DbTableListItem[]> ListTablesAsync(DbConnection connection, CancellationToken cancellationToken = default);
+		public abstract ValueTask<DbTableListItem[]> ListTablesAsync(DbConnection connection, CancellationToken cancellationToken = default);
 
 		/// <inheritdoc/>
-		public abstract Task<DbDataReader> ExecuteTableReaderAsync(DbConnection connection, string tableName, string? ownerName = null, CancellationToken cancellationToken = default);
+		public abstract ValueTask<DbDataReader> ExecuteTableReaderAsync(DbConnection connection, string tableName, string? ownerName = null, CancellationToken cancellationToken = default);
 
 		#endregion
 
@@ -82,7 +82,7 @@ namespace NraDatabaseExport.DbProviders
 		/// <param name="parameters">the database parameters to associate with the command</param>
 		/// <param name="cancellationToken">the cancellation token</param>
 		/// <returns>the data reader containing the result of the command execution</returns>
-		protected async Task<DbDataReader> ExecuteReaderAsync(DbConnection connection, string commandText, IDbDataParameter[] parameters = null, CancellationToken cancellationToken = default)
+		protected async ValueTask<DbDataReader> ExecuteReaderAsync(DbConnection connection, string commandText, IDbDataParameter[] parameters = null, CancellationToken cancellationToken = default)
 		{
 			if (commandText is null)
 			{

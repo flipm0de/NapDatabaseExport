@@ -21,7 +21,7 @@ namespace NraDatabaseExport.DbProviders
 		#region DbProviderBase Members
 
 		/// <inheritdoc/>
-		public override async Task<DbConnection> OpenConnectionAsync(CancellationToken cancellationToken = default)
+		public override async ValueTask<DbConnection> OpenConnectionAsync(CancellationToken cancellationToken = default)
 		{
 			string connectionString = CreateConnectionString();
 
@@ -42,11 +42,11 @@ namespace NraDatabaseExport.DbProviders
 		}
 
 		/// <inheritdoc/>
-		public override Task<DbDatabaseListItem[]> ListDatabasesAsync(DbConnection connection, CancellationToken cancellationToken = default)
-			=> Task.FromResult(Array.Empty<DbDatabaseListItem>());
+		public override ValueTask<DbDatabaseListItem[]> ListDatabasesAsync(DbConnection connection, CancellationToken cancellationToken = default)
+			=> new ValueTask<DbDatabaseListItem[]>(Array.Empty<DbDatabaseListItem>());
 
 		/// <inheritdoc/>
-		public override async Task<DbTableListItem[]> ListTablesAsync(DbConnection connection, CancellationToken cancellationToken = default)
+		public override async ValueTask<DbTableListItem[]> ListTablesAsync(DbConnection connection, CancellationToken cancellationToken = default)
 		{
 			if (connection is null)
 			{
@@ -72,7 +72,7 @@ namespace NraDatabaseExport.DbProviders
 		}
 
 		/// <inheritdoc/>
-		public override async Task<DbDataReader> ExecuteTableReaderAsync(DbConnection connection, string tableName, string? ownerName = null, CancellationToken cancellationToken = default)
+		public override async ValueTask<DbDataReader> ExecuteTableReaderAsync(DbConnection connection, string tableName, string? ownerName = null, CancellationToken cancellationToken = default)
 		{
 			if (connection is null)
 			{

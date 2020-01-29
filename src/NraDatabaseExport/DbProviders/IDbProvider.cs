@@ -55,7 +55,7 @@ namespace NraDatabaseExport.DbProviders
 		/// <param name="cancellationToken">the cancellation token</param>
 		/// <returns>an opened connection to the database</returns>
 		/// <exception cref="DbProviderException">A database connection could not be established.</exception>
-		Task<DbConnection> OpenConnectionAsync(CancellationToken cancellationToken = default);
+		ValueTask<DbConnection> OpenConnectionAsync(CancellationToken cancellationToken = default);
 
 		/// <summary>
 		/// Gets the list of the names of the databases for the current connection.
@@ -63,7 +63,7 @@ namespace NraDatabaseExport.DbProviders
 		/// <param name="connection">the database connection to use</param>
 		/// <param name="cancellationToken">the cancellation token</param>
 		/// <returns>the list of database names</returns>
-		Task<DbDatabaseListItem[]> ListDatabasesAsync(DbConnection connection, CancellationToken cancellationToken = default);
+		ValueTask<DbDatabaseListItem[]> ListDatabasesAsync(DbConnection connection, CancellationToken cancellationToken = default);
 
 		/// <summary>
 		/// Gets the list of tables (for the current database).
@@ -71,7 +71,7 @@ namespace NraDatabaseExport.DbProviders
 		/// <param name="connection">the database connection to use</param>
 		/// <param name="cancellationToken">the cancellation token</param>
 		/// <returns>the list of table names</returns>
-		Task<DbTableListItem[]> ListTablesAsync(DbConnection connection, CancellationToken cancellationToken = default);
+		ValueTask<DbTableListItem[]> ListTablesAsync(DbConnection connection, CancellationToken cancellationToken = default);
 
 		/// <summary>
 		/// Gets the data reader for the data in a specified table.
@@ -81,6 +81,6 @@ namespace NraDatabaseExport.DbProviders
 		/// <param name="ownerName">the name of the owner (schema) of the table</param>
 		/// <param name="cancellationToken">the cancellation token</param>
 		/// <returns>the data reader containing the data</returns>
-		Task<DbDataReader> ExecuteTableReaderAsync(DbConnection connection, string tableName, string? ownerName = null, CancellationToken cancellationToken = default);
+		ValueTask<DbDataReader> ExecuteTableReaderAsync(DbConnection connection, string tableName, string? ownerName = null, CancellationToken cancellationToken = default);
 	}
 }
