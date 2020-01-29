@@ -42,6 +42,7 @@
 			MaxHeight="300"
 			ItemsSource="{Binding Tables}"
 			AutoGenerateColumns="False"
+			IsReadOnly="True"
 			>
 			<DataGrid.RowStyle>
 				<Style TargetType="{x:Type DataGridRow}">
@@ -60,9 +61,16 @@
 					Width="*"
 					/>
 				<DataGridTextColumn
+					x:Uid="TableExportedRowsCountDataGridTextColumn"
+					Header="Записи"
+					Binding="{Binding ExportedRowsCount}"
+					MinWidth="100"
+					/>
+				<DataGridTextColumn
 					x:Uid="TableExportStatusDataGridTextColumn"
 					Header="Статус"
 					Binding="{Binding ExportStatus}"
+					MinWidth="50"
 					/>
 			</DataGrid.Columns>
 		</DataGrid>

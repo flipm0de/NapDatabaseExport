@@ -10,6 +10,7 @@ namespace NraDatabaseExport.App.ViewModels
 	{
 		private bool _isSelected;
 		private DbTableExportStatus? _exportStatus;
+		private int exportedRowsCount;
 
 		/// <summary>
 		/// Gets the name of the table.
@@ -45,6 +46,15 @@ namespace NraDatabaseExport.App.ViewModels
 		{
 			get => _exportStatus;
 			set => SetProperty(ref _exportStatus, value);
+		}
+
+		/// <summary>
+		/// Gets or sets the number of exported rows.
+		/// </summary>
+		public int ExportedRowsCount
+		{
+			get => exportedRowsCount;
+			set => SetProperty(ref exportedRowsCount, value);
 		}
 
 		/// <summary>

@@ -985,6 +985,7 @@ namespace NraDatabaseExport.App.ViewModels
 					}
 
 					table.ExportStatus = DbTableExportStatus.Busy;
+					table.ExportedRowsCount = 0;
 
 					string tableName = table.Name;
 					string? ownerName = table.OwnerName;
@@ -1026,6 +1027,8 @@ namespace NraDatabaseExport.App.ViewModels
 							}
 
 							await exportProvider.WriteDataRowAsync(values, cancellationToken: cancellationToken);
+
+							table.ExportedRowsCount++;
 						}
 
 						table.ExportStatus = DbTableExportStatus.Ok;
