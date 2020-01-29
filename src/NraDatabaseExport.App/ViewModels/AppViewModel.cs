@@ -294,6 +294,12 @@ namespace NraDatabaseExport.App.ViewModels
 		public DelegateCommand InvertAllTablesCommand { get; }
 
 		/// <summary>
+		/// Gets the number of selected tables.
+		/// </summary>
+		public int SelectedTablesCount
+			=> Tables.Count(x => x.IsSelected);
+
+		/// <summary>
 		/// Gets the command to go back to the "Select Database" slide.
 		/// </summary>
 		public DelegateCommand GoBackToSelectDatabaseCommand { get; }
@@ -701,10 +707,14 @@ namespace NraDatabaseExport.App.ViewModels
 						break;
 					}
 			}
+
+			NotifyPropertyChanged(nameof(SelectedTablesCount));
 		}
 
 		private void TablesItem_PropertyChanged(object sender, PropertyChangedEventArgs e)
 		{
+			NotifyPropertyChanged(nameof(SelectedTablesCount));
+
 			GoToConfigureExportCommand.NotifyCanExecuteChanged();
 		}
 
