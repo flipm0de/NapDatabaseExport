@@ -17,6 +17,7 @@
 			<RowDefinition Height="Auto" />
 			<RowDefinition Height="*" />
 			<RowDefinition Height="Auto" />
+			<RowDefinition Height="Auto" />
 		</Grid.RowDefinitions>
 		<TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"
 			x:Uid="TitleTextBlock"
@@ -28,7 +29,7 @@
 			x:Uid="DatabaseLabel"
 			HorizontalAlignment="Left"
 			VerticalAlignment="Top"
-			Content="База данни:"
+			Content="Бази данни:"
 			/>
 		<ListBox Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"
 			HorizontalAlignment="Stretch"
@@ -47,7 +48,19 @@
 				</Style>
 			</ListBox.ItemContainerStyle>
 		</ListBox>
-		<StackPanel Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2"
+		<Label Grid.Row="3" Grid.Column="0"
+			x:Uid="DatabaseLabel"
+			HorizontalAlignment="Left"
+			VerticalAlignment="Top"
+			Content="База данни:"
+			/>
+		<TextBlock Grid.Row="3" Grid.Column="1"
+			HorizontalAlignment="Left"
+			VerticalAlignment="Center"
+			FontWeight="Heavy"
+			Text="{Binding SelectedDatabase.Name}"
+			/>
+		<StackPanel Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2"
 			Orientation="Horizontal"
 			HorizontalAlignment="Right">
 			<Button
