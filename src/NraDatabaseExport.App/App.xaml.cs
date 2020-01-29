@@ -1,10 +1,10 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Windows;
 using System.Windows.Threading;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MvvmDialogs;
+using NraDatabaseExport.App.Options;
 using NraDatabaseExport.App.ViewModels;
 
 namespace NraDatabaseExport.App

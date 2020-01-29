@@ -17,8 +17,10 @@ using MvvmDialogs.FrameworkDialogs.FolderBrowser;
 using MvvmDialogs.FrameworkDialogs.MessageBox;
 using MvvmDialogs.FrameworkDialogs.OpenFile;
 using NraDatabaseExport.App.Infrastructure;
+using NraDatabaseExport.App.Options;
 using NraDatabaseExport.DbProviders;
 using NraDatabaseExport.ExportProviders;
+using DbProviderFactory = NraDatabaseExport.DbProviders.DbProviderFactory;
 
 namespace NraDatabaseExport.App.ViewModels
 {
@@ -392,7 +394,7 @@ namespace NraDatabaseExport.App.ViewModels
 
 			#region "Configure Database" Slide
 
-			DbProviderListItem[] dbProviderListItems = NraDatabaseExport.DbProviders.DbProviderFactory.ListProviders();
+			DbProviderListItem[] dbProviderListItems = DbProviderFactory.ListProviders();
 
 			IEnumerable<DbProviderViewModel> dbProviders = dbProviderListItems
 				.Select(CreateDbProviderViewModel);
@@ -921,11 +923,26 @@ namespace NraDatabaseExport.App.ViewModels
 
 				Tables.Add(table);
 			}
+
+			if (!(_exportOptions.Value.Tables is null))
+			{
+				foreach(DbTableOptionListItem tableOptionListItem in _exportOptions.Value.Tables)
+				{
+					DbTableViewModel table = Tables
+						.FirstOrDefault(x => x.Name == tableOptionListItem.Name
+							&& x.OwnerName == tableOptionListItem.OwnerName);
+
+					if (!(table is null))
+					{
+						table.IsSelected = true;
+					}
+				}
+			}
 		}
 
 		private IDbProvider CreateDbProvider(string? databaseName)
 		{
-			IDbProvider provider = NraDatabaseExport.DbProviders.DbProviderFactory.CreateProvider(SelectedDbProvider.Type);
+			IDbProvider provider = DbProviderFactory.CreateProvider(SelectedDbProvider.Type);
 
 			provider.DatabaseFileName = DatabaseFileName;
 			provider.ServerName = ServerName;
@@ -965,7 +982,7 @@ namespace NraDatabaseExport.App.ViewModels
 					table.ExportStatus = DbTableExportStatus.Busy;
 
 					string tableName = table.Name;
-					string ownerName = table.OwnerName;
+					string? ownerName = table.OwnerName;
 					int rowIndex = 0;
 					int columnIndex = 0;
 					string fileName = Path.Combine(ExportPath,

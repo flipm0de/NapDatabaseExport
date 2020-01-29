@@ -19,7 +19,7 @@ namespace NraDatabaseExport.App.ViewModels
 		/// <summary>
 		/// Gets the name of the owner (schema) of the table.
 		/// </summary>
-		public string OwnerName { get; }
+		public string? OwnerName { get; }
 
 		/// <summary>
 		/// Gets the display name.
@@ -52,7 +52,7 @@ namespace NraDatabaseExport.App.ViewModels
 		/// </summary>
 		/// <param name="name">the name of the table</param>
 		/// <param name="ownerName">the of the owner (schema) of the table</param>
-		public DbTableViewModel(string name, string ownerName = null)
+		public DbTableViewModel(string name, string? ownerName = null)
 		{
 			Name = name ?? throw new ArgumentNullException(nameof(name));
 			OwnerName = ownerName;
