@@ -33,16 +33,25 @@ namespace NraDatabaseExport.DbProviders
 		public string? DatabaseName { get; set; }
 
 		/// <inheritdoc/>
-		public abstract ValueTask<DbConnection> OpenConnectionAsync(CancellationToken cancellationToken = default);
+		public abstract ValueTask<DbConnection> OpenConnectionAsync(
+			CancellationToken cancellationToken = default);
 
 		/// <inheritdoc/>
-		public abstract ValueTask<DbDatabaseListItem[]> ListDatabasesAsync(DbConnection connection, CancellationToken cancellationToken = default);
+		public abstract ValueTask<DbDatabaseListItem[]> ListDatabasesAsync(
+			DbConnection connection,
+			CancellationToken cancellationToken = default);
 
 		/// <inheritdoc/>
-		public abstract ValueTask<DbTableListItem[]> ListTablesAsync(DbConnection connection, CancellationToken cancellationToken = default);
+		public abstract ValueTask<DbTableListItem[]> ListTablesAsync(
+			DbConnection connection, 
+			CancellationToken cancellationToken = default);
 
 		/// <inheritdoc/>
-		public abstract ValueTask<DbDataReader> ExecuteTableReaderAsync(DbConnection connection, string tableName, string? ownerName = null, CancellationToken cancellationToken = default);
+		public abstract ValueTask<DbDataReader> ExecuteTableReaderAsync(
+			DbConnection connection,
+			string tableName, 
+			string? ownerName = null,
+			CancellationToken cancellationToken = default);
 
 		#endregion
 

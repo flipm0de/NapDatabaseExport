@@ -21,13 +21,19 @@ namespace NraDatabaseExport.ExportProviders
 		public CultureInfo Culture { get; set; } = CultureInfo.InvariantCulture;
 
 		/// <inheritdoc/>
-		public abstract ValueTask OpenWriteAsync(string filePath, CancellationToken cancellationToken = default);
+		public abstract ValueTask OpenWriteAsync(
+			string filePath,
+			CancellationToken cancellationToken = default);
 
 		/// <inheritdoc/>
-		public abstract ValueTask WriteHeaderRowAsync(string[] columns, CancellationToken cancellationToken = default);
+		public abstract ValueTask WriteHeaderRowAsync(
+			string[] columns,
+			CancellationToken cancellationToken = default);
 
 		/// <inheritdoc/>
-		public abstract ValueTask WriteDataRowAsync(object[] values, CancellationToken cancellationToken = default);
+		public abstract ValueTask WriteDataRowAsync(
+			object[] values,
+			CancellationToken cancellationToken = default);
 
 		#endregion
 
