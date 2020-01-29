@@ -940,7 +940,7 @@ namespace NraDatabaseExport.App.ViewModels
 
 						using IExportProvider exportProvider = CreateExportProvider();
 
-						exportProvider.OpenWrite(fileName);
+						await exportProvider.OpenWriteAsync(fileName, cancellationToken: cancellationToken);
 
 						var columnNames = new string[reader.FieldCount];
 
@@ -949,7 +949,7 @@ namespace NraDatabaseExport.App.ViewModels
 							columnNames[columnIndex] = reader.GetName(columnIndex);
 						}
 
-						exportProvider.WriteHeaderRow(columnNames);
+						await exportProvider.WriteHeaderRowAsync(columnNames, cancellationToken: cancellationToken);
 
 						rowIndex++;
 
@@ -962,7 +962,7 @@ namespace NraDatabaseExport.App.ViewModels
 								values[columnIndex] = reader.GetValue(columnIndex);
 							}
 
-							exportProvider.WriteDataRow(values);
+							await exportProvider.WriteDataRowAsync(values, cancellationToken: cancellationToken);
 						}
 
 						table.ExportStatus = DbTableExportStatus.Ok;

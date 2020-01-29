@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Globalization;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace NraDatabaseExport.ExportProviders
 {
@@ -14,21 +16,27 @@ namespace NraDatabaseExport.ExportProviders
 		public CultureInfo Culture { get; set; }
 
 		/// <summary>
-		/// Begins writing the data into a file with a specified name.
+		/// Opens a file with a specified name to writing data into.
 		/// </summary>
 		/// <param name="fileName">the name of the file to export data to</param>
-		void OpenWrite(string fileName);
+		/// <param name="cancellationToken">the cancellation token</param>
+		/// <returns>the task of opening the file to write</returns>
+		Task OpenWriteAsync(string fileName, CancellationToken cancellationToken = default);
 
 		/// <summary>
-		/// Writes a header row containing the names of the data columns.
+		/// Writes a header row with specified names.
 		/// </summary>
 		/// <param name="columns">the names of the data columns</param>
-		void WriteHeaderRow(string[] columns);
+		/// <param name="cancellationToken">the cancellation token</param>
+		/// <returns>the task of writing a header row</returns>
+		Task WriteHeaderRowAsync(string[] columns, CancellationToken cancellationToken = default);
 
 		/// <summary>
-		/// Writes a data row containing the values in the row.
+		/// Writes a data row with specified values.
 		/// </summary>
-		/// <param name="values"></param>
-		void WriteDataRow(object[] values);
+		/// <param name="values">the values in the row</param>
+		/// <param name="cancellationToken">the cancellation token</param>
+		/// <returns>the task of writing a data row</returns>
+		Task WriteDataRowAsync(object[] values, CancellationToken cancellationToken = default);
 	}
 }

@@ -2,6 +2,8 @@
 using System;
 using System.IO;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 using CsvHelper;
 using CsvHelper.Configuration;
 
@@ -28,7 +30,7 @@ namespace NraDatabaseExport.ExportProviders
 		#region ExportProviderBase Members
 
 		/// <inheritdoc/>
-		public override void OpenWrite(string filePath)
+		public override async Task OpenWriteAsync(string filePath, CancellationToken cancellationToken = default)
 		{
 			StreamWriter writer = null;
 			CsvWriter csvWriter = null;
@@ -54,7 +56,11 @@ namespace NraDatabaseExport.ExportProviders
 			catch
 			{
 				csvWriter?.Dispose();
-				writer?.Dispose();
+
+				if (!(writer is null))
+				{
+					await writer.DisposeAsync();
+				}
 
 				throw;
 			}
@@ -64,7 +70,7 @@ namespace NraDatabaseExport.ExportProviders
 		}
 
 		/// <inheritdoc/>
-		public override void WriteHeaderRow(string[] columns)
+		public override async Task WriteHeaderRowAsync(string[] columns, CancellationToken cancellationToken = default)
 		{
 			if (columns is null)
 			{
@@ -76,11 +82,11 @@ namespace NraDatabaseExport.ExportProviders
 				_csvWriter.WriteField(column);
 			}
 
-			_csvWriter.NextRecord();
+			await _csvWriter.NextRecordAsync();
 		}
 
 		/// <inheritdoc/>
-		public override void WriteDataRow(object[] values)
+		public override async Task WriteDataRowAsync(object[] values, CancellationToken cancellationToken = default)
 		{
 			if (values is null)
 			{
@@ -108,7 +114,7 @@ namespace NraDatabaseExport.ExportProviders
 				_csvWriter.WriteField(valueToWrite);
 			}
 
-			_csvWriter.NextRecord();
+			await _csvWriter.NextRecordAsync();
 		}
 
 		/// <inheritdoc/>

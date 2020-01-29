@@ -3,6 +3,8 @@ using System;
 using System.Globalization;
 using System.IO;
 using System.Text.Json;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace NraDatabaseExport.ExportProviders
 {
@@ -19,7 +21,7 @@ namespace NraDatabaseExport.ExportProviders
 		#region ExportProviderBase Members
 
 		/// <inheritdoc/>
-		public override void OpenWrite(string filePath)
+		public override async Task OpenWriteAsync(string filePath, CancellationToken cancellationToken = default)
 		{
 			Stream stream = null;
 			Utf8JsonWriter jsonWriter = null;
@@ -37,8 +39,15 @@ namespace NraDatabaseExport.ExportProviders
 			}
 			catch
 			{
-				jsonWriter?.Dispose();
-				stream?.Dispose();
+				if (!(jsonWriter is null))
+				{
+					await jsonWriter.DisposeAsync();
+				}
+
+				if (!(stream is null))
+				{
+					await stream.DisposeAsync();
+				}
 
 				throw;
 			}
@@ -50,7 +59,7 @@ namespace NraDatabaseExport.ExportProviders
 		}
 
 		/// <inheritdoc/>
-		public override void WriteHeaderRow(string[] columns)
+		public override Task WriteHeaderRowAsync(string[] columns, CancellationToken cancellationToken = default)
 		{
 			if (columns is null)
 			{
@@ -72,10 +81,12 @@ namespace NraDatabaseExport.ExportProviders
 			}
 
 			_jsonWriter.WriteEndArray();
+
+			return Task.CompletedTask;
 		}
 
 		/// <inheritdoc/>
-		public override void WriteDataRow(object[] values)
+		public override Task WriteDataRowAsync(object[] values, CancellationToken cancellationToken = default)
 		{
 			if (values is null)
 			{
@@ -170,6 +181,8 @@ namespace NraDatabaseExport.ExportProviders
 			}
 
 			_jsonWriter.WriteEndArray();
+
+			return Task.CompletedTask;
 		}
 
 		/// <inheritdoc/>

@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Globalization;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace NraDatabaseExport.ExportProviders
 {
@@ -19,13 +21,13 @@ namespace NraDatabaseExport.ExportProviders
 		public CultureInfo Culture { get; set; } = CultureInfo.InvariantCulture;
 
 		/// <inheritdoc/>
-		public abstract void OpenWrite(string filePath);
+		public abstract Task OpenWriteAsync(string filePath, CancellationToken cancellationToken = default);
 
 		/// <inheritdoc/>
-		public abstract void WriteHeaderRow(string[] columns);
+		public abstract Task WriteHeaderRowAsync(string[] columns, CancellationToken cancellationToken = default);
 
 		/// <inheritdoc/>
-		public abstract void WriteDataRow(object[] values);
+		public abstract Task WriteDataRowAsync(object[] values, CancellationToken cancellationToken = default);
 
 		#endregion
 
